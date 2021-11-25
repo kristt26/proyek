@@ -747,7 +747,7 @@ class DashboardController extends BaseController
                 $row[] = $list->konsultan_pengawas;
                 $row[] = $list->kontraktor_pelaksana;
                 // $row[] = $list->progress_proyek;
-                $row[] = $list->terapan_anggaran;
+                $row[] = rupiah($list->terapan_anggaran);
                 $row[] = rupiah($list->nilai_kontrak);
                 $row[] = '<a href="' . base_url('dashboard/kelola_kegiatan/' . enkrip($list->id)) . '" class="btn btn-primary btn-sm"><i class="fa fa-file"></i></a> &nbsp; <a href="' . base_url('dashboard/kelola_kegiatan_add/' . enkrip($list->id)) . '" class="btn btn-success btn-sm"><i class="fa fa-plus"></i></a>';
                 $row[] = '<a href="' . base_url('dashboard/proyek_edit/' . enkrip($list->id)) . '" class="text-secondary"><i class="fa fa-pencil-alt"></i></a> &nbsp; <a href="#" onClick="return deleteProyek(' . $list->id . ')" class="text-secondary"><i class="fa fa-trash"></i></a>';
@@ -1852,12 +1852,12 @@ class DashboardController extends BaseController
         return view('bendahara/dana', $data);
     }
 
-    public function dana_lap_list()
+    public function dana_lap_list($id_proyek)
     {
         $request = Services::request();
         $m_dana = new DanaMasuk_Model($request);
         if ($request->getMethod(true) == 'POST') {
-            $lists = $m_dana->get_datatables();
+            $lists = $m_dana->get_datatables($id_proyek);
             $data = [];
             $no = $request->getPost("start");
             foreach ($lists as $list) {
@@ -1882,6 +1882,7 @@ class DashboardController extends BaseController
     {
         $data = [
             'title' => 'Manajemen Proyek',
+            'proyek' => $this->proyek->findAll()
         ];
         return view('direktur/dana', $data);
     }

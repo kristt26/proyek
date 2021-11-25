@@ -87,7 +87,7 @@
             <div class="sidebar-heading">
                 Features
             </div>
-            <?php if(session()->get('level') == 'admin'){ ?>
+            <?php if (session()->get('level') == 'admin') {?>
             <li class="nav-item">
                 <a class="nav-link" href="<?=base_url('dashboard/pegawai')?>">
                     <i class="fa fa-users"></i>
@@ -113,23 +113,17 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?=base_url('dashboard/kegiatan')?>">
-                    <i class="fa fa-tasks"></i>
-                    <span>Kegiatan</span>
-                </a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="<?=base_url('dashboard/users')?>">
                     <i class="fa fa-user"></i>
                     <span>Pengguna</span>
                 </a>
             </li>
-            <?php } ?>
-            <?php if(session()->get('level') == 'tim lapangan'){ ?>
+            <?php }?>
+            <?php if (session()->get('level') == 'tim lapangan') {?>
             <li class="nav-item">
                 <a class="nav-link" href="<?=base_url('dashboard/dokumentasi')?>">
                     <i class="fa fa-folder-open"></i>
-                    <span>Dokuemtasi Proyek</span>
+                    <span>Kegiatan Proyek</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -156,8 +150,8 @@
                     <span>Jenis Bahan Bakar</span>
                 </a>
             </li>
-            <?php } ?>
-            <?php if(session()->get('level') == 'bendahara'){ ?>
+            <?php }?>
+            <?php if (session()->get('level') == 'bendahara') {?>
             <li class="nav-item">
                 <a class="nav-link" href="<?=base_url('dashboard/operasional')?>">
                     <i class="fa fa-money-check-alt"></i>
@@ -176,9 +170,15 @@
                     <span>Dana Masuk</span>
                 </a>
             </li>
-            <?php } ?>
+            <li class="nav-item">
+                <a class="nav-link" href="<?=base_url('dashboard/dana_keluar')?>">
+                    <i class="fa fa-money-check"></i>
+                    <span>Dana Keluar</span>
+                </a>
+            </li>
+            <?php }?>
 
-            <?php if(session()->get('level') == 'direktur'){ ?>
+            <?php if (session()->get('level') == 'direktur') {?>
             <li class="nav-item">
                 <a class="nav-link" href="<?=base_url('dashboard/pegawai_lap')?>">
                     <i class="fa fa-users"></i>
@@ -233,7 +233,7 @@
                     <span>Dana Proyek</span>
                 </a>
             </li>
-            <?php } ?>
+            <?php }?>
 
             <hr class="sidebar-divider">
             <div class="version" id="version-ruangadmin"></div>

@@ -34,7 +34,7 @@ class Proyek_Model extends Model
     private function _get_datatables_query()
     {
         $i = 0;
-        $this->dt->select("proyek.*, (SELECT sum(jumlah) FROM dana_keluar where dana_keluar.id_proyek=id) AS terapan_anggaran ");
+        $this->dt->select("proyek.*, (SELECT sum(jumlah) FROM dana_keluar where dana_keluar.id_proyek=proyek.id) AS terapan_anggaran ");
         $this->dt->where('deleted_at', null);
         foreach ($this->column_search as $item) {
             if ($this->request->getPost('search')['value']) {
