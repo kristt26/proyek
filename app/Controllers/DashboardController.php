@@ -1377,9 +1377,10 @@ class DashboardController extends BaseController
     {
         $data = [
             'title' => 'Manajemen Proyek',
-            'data' => $this->users->find(dekrip($id)),
+            'data' => $this->users->getUser(dekrip($id)),
             'proyek' => $this->proyek->findAll(),
             'id' => $id,
+            'pegawai' => $this->pegawai->findAll()
         ];
         return view('admin/users/users_edit', $data);
 

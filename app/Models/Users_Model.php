@@ -34,7 +34,17 @@ class Users_Model extends Model {
 
     private function _get_datatables_query(){
         $i = 0;
-        $this->dt->select('users.*, proyek.nama_proyek')->join('proyek', 'proyek.id=users.id_proyek', 'left')->where('users.deleted_at', NULL);
+        $this->dt->select("`proyek`.`users`.`id`,
+        `proyek`.`users`.`id_pegawai`,
+        `proyek`.`users`.`hak_akses`,
+        `proyek`.`users`.`id_proyek`,
+        `proyek`.`users`.`username`,
+        `proyek`.`users`.`password`,
+        `proyek`.`users`.`created_at`,
+        `proyek`.`users`.`updated_at`,
+        `proyek`.`users`.`deleted_at`,
+        `proyek`.`pegawai`.`nama`,
+        `proyek`.`nama_proyek`")->join('proyek', 'proyek.id=users.id_proyek', 'left')->join('pegawai', '`users`.`id_pegawai` = `pegawai`.`id`', 'left')->where('users.deleted_at', NULL);
         foreach ($this->column_search as $item){
             if($this->request->getPost('search')['value']){ 
                 if($i===0){
@@ -75,5 +85,26 @@ class Users_Model extends Model {
     public function count_all(){
         $tbl_storage = $this->db->table($this->table)->where('deleted_at', NULL);
         return $tbl_storage->countAllResults();
+    }
+
+    public function getUser($id)
+    {
+        $result = $this->db->query("SELECT
+            `proyek`.`users`.`id`,
+            `proyek`.`users`.`id_pegawai`,
+            `proyek`.`users`.`hak_akses`,
+            `proyek`.`users`.`id_proyek`,
+            `proyek`.`users`.`username`,
+            `proyek`.`users`.`password`,
+            `proyek`.`users`.`created_at`,
+            `proyek`.`users`.`updated_at`,
+            `proyek`.`users`.`deleted_at`,
+            `proyek`.`pegawai`.`nama`,
+            `proyek`.`nama_proyek`
+        FROM
+            `users`
+            LEFT JOIN `pegawai` ON `users`.`id_pegawai` = `pegawai`.`id`
+            LEFT JOIN `proyek` ON `proyek`.`id` = `proyek`.`users`.`id_proyek` WHERE `users`.`id` = '$id'")->getRowArray();
+        return $result;
     }
 }
