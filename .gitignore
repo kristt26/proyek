@@ -83,12 +83,12 @@ phpunit
 #-------------------------
 # Composer
 #-------------------------
-vendor/
+
 
 #-------------------------
 # IDE / Development Files
 #-------------------------
-
+/vendor
 # Modules Testing
 _modules/*
 
