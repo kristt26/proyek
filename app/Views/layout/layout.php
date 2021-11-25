@@ -302,7 +302,7 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-    <script src="<?= base_url()?>/assets/backend/dist/js/angular/angular.min.js"></script>
+    <script src="<?= base_url()?>/assets/backend/libs/angular/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.8.2/angular-sanitize.min.js"
         integrity="sha512-JkCv2gG5E746DSy2JQlYUJUcw9mT0vyre2KxE2ZuDjNfqG90Bi7GhcHUjLQ2VIAF1QVsY5JMwA1+bjjU5Omabw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
