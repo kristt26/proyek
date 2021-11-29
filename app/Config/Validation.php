@@ -274,6 +274,32 @@ class Validation
             'required' => '{field} wajib diisi'
         ]
     ];
+    public $insertKelolaKegiatan = [
+        'id_proyek'       => [
+            'label'  => 'Proyek',
+            'rules'  => 'required'
+        ],
+        'tgl_mulai'      => [
+            'label'  => 'Tanggal Mulai',
+            'rules'  => 'required'
+        ],
+        'tgl_selesai'      => [
+            'label'  => 'Tanggal Selesai',
+            'rules'  => 'required'
+        ]
+    ];
+
+    public $insertKelolaKegiatan_errors = [
+        'id_proyek'    => [
+            'required' => '{field} wajib diisi'
+        ],
+        'tgl_mulai'    => [
+            'required' => '{field} wajib diisi'
+        ],
+        'tgl_selesai'    => [
+            'required' => '{field} wajib diisi'
+        ]
+    ];
 
     public $insertUsers = [
         'id_pegawai'       => [

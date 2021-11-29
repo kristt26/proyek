@@ -1043,10 +1043,8 @@ class DashboardController extends BaseController
 
         $validasi = [
             'id_proyek' => $id_proyek,
-            'nama_kegiatan' => $nama_kegiatan,
             'tgl_mulai' => $tgl_mulai,
             'tgl_selesai' => $tgl_selesai,
-            'progress' => $progress,
         ];
 
         if ($this->validation->run($validasi, 'insertKelolaKegiatan') == false) {
