@@ -19,8 +19,8 @@
                                 <label for=""></label>
 
                                 <select class="select2-single-placeholder form-control" name="id_proyek" id="proyek"
-                                    onChange="testing()">
-                                    <option value="">Select</option>
+                                    onchange="check()">
+                                    <option value=""></option>
                                     <?php foreach ($proyek as $key => $data):?>
                                     <option value="<?= $data['id']?>"><?= $data['nama_proyek']?></option>
                                     <?php endforeach; ?>
@@ -50,44 +50,71 @@
         </div>
         <!---Container Fluid-->
         <script>
-var element = document.getElementById("proyek");
-element.onchange = function(event) {
-    $(document).ready(function() {
-            var url = "<?php echo base_url('dashboard/dana_lap_list')?>" + "/" + element.value;
-            $('#myTableDana').DataTable({
-                "responsive": true,
-                "processing": true,
-                "serverSide": true,
-                "order": [],
-                "ajax": {
-                    "url": url,
-                    "type": "POST"
-                },
-                //optional
-                "lengthMenu": [
-                    [5, 10, 25],
-                    [5, 10, 25]
-                ],
-                "columnDefs": [{
-                        "targets": 0,
-                        "className": "dt-body-center"
-                    },
-                    {
-                        "targets": 2,
-                        "className": "dt-body-center"
-                    },
-                    {
-                        "targets": 4,
-                        "className": "dt-body-right"
-                    }
-                ],
-            });
-        }
-    })
+check = () => {
+    console.log("Testing");
+    var element = document.getElementById("proyek");
+    var url = "<?php echo base_url('dashboard/dana_lap_list')?>" + "/" + element.value;
+    $('#myTableDana').DataTable({
+        "responsive": true,
+        "processing": true,
+        "serverSide": true,
+        "order": [],
+        "ajax": {
+            "url": url,
+            "type": "POST"
+        },
+        "lengthMenu": [
+            [5, 10, 25],
+            [5, 10, 25]
+        ],
+        "columnDefs": [{
+                "targets": 0,
+                "className": "dt-body-center"
+            },
+            {
+                "targets": 2,
+                "className": "dt-body-center"
+            },
+            {
+                "targets": 4,
+                "className": "dt-body-right"
+            }
+        ],
+    });
+}
+// var element = document.getElementById("proyek"); element.onchange = function(event) {
+// }
 $(document).ready(function() {
     $('.select2-single-placeholder').select2({
         placeholder: "Pilih Proyek",
         allowClear: true
+    });
+    $('#myTableDana').DataTable({
+        "responsive": true,
+        "processing": true,
+        "serverSide": true,
+        "order": [],
+        "ajax": {
+            "url": "<?php echo base_url('dashboard/dana_lap_list')?>",
+            "type": "POST"
+        },
+        "lengthMenu": [
+            [5, 10, 25],
+            [5, 10, 25]
+        ],
+        "columnDefs": [{
+                "targets": 0,
+                "className": "dt-body-center"
+            },
+            {
+                "targets": 2,
+                "className": "dt-body-center"
+            },
+            {
+                "targets": 4,
+                "className": "dt-body-right"
+            }
+        ],
     });
 });
         </script>
