@@ -15,6 +15,7 @@ use App\Models\Operasional_Model;
 use App\Models\Pegawai_Model;
 use App\Models\PemakaianBBM_Model;
 use App\Models\PemakaianMaterial_Model;
+use App\Models\JenisMaterialModel;
 use App\Models\PenggunaanKendaraan_Model;
 use App\Models\Proyek_Model;
 use App\Models\Transaksi_Model;
@@ -45,6 +46,7 @@ class DashboardController extends BaseController
         $this->penggunaan = new PenggunaanKendaraan_Model();
         $this->pemakaian_bbm = new PemakaianBBM_Model();
         $this->material = new PemakaianMaterial_Model();
+        $this->jenis_material = new JenisMaterialModel();
         $this->bbm = new BahanBakar_Model();
         $this->decode = new Decode();
         $this->service_lib = new Service_Lib();
@@ -640,18 +642,21 @@ class DashboardController extends BaseController
             ];
             return view('admin/kendaraan/kendaraan_add', $data);
         } else {
-            $insert = [
-                'jenis_kendaraan' => $jenis_kendaraan,
-                'nomor_polisi' => $nomor_polisi,
-                'nomor_mesin' => $nomor_mesin,
-            ];
-            $save = $this->kendaraan->save($insert);
-            if ($save) {
-                session()->setFlashdata('success', 'Tambah data kendaraan berhasil');
+            try {
+                $insert = [
+                    'jenis_kendaraan' => $jenis_kendaraan,
+                    'nomor_polisi' => $nomor_polisi,
+                    'nomor_mesin' => $nomor_mesin,
+                ];
+                $save = $this->kendaraan->save($insert);
+                if ($save) {
+                    session()->setFlashdata('success', 'Tambah data kendaraan berhasil');
+                    return redirect()->to(base_url('dashboard/kendaraan'));
+                }
+            } catch (\Throwable $th) {
+                session()->setFlashdata('errors', 'Tambah data kendaraan gagal, nomor polisi telah ada');
                 return redirect()->to(base_url('dashboard/kendaraan'));
-            } else {
-                session()->setFlashdata('errors', 'Tambah data kendaraan gagal');
-                return redirect()->to(base_url('dashboard/kendaraan'));
+                //throw $th;
             }
         }
     }
@@ -741,7 +746,7 @@ class DashboardController extends BaseController
                 $row[] = $no;
                 $row[] = $list->nama_proyek;
                 $row[] = $list->lokasi;
-                $row[] = $list->jangka_waktu;
+                $row[] = $this->decode->selisih_tanggal($list->tgl_mulai, $list->tgl_selesai);
                 $row[] = date('d-m-Y', strtotime($list->tgl_mulai));
                 $row[] = date('d-m-Y', strtotime($list->tgl_selesai));
                 $row[] = $list->konsultan_pengawas;
@@ -811,6 +816,7 @@ class DashboardController extends BaseController
     {
         $data = [
             'title' => 'Manajemen Proyek',
+            'decode' => $this->decode
         ];
         return view('admin/proyek/proyek_add', $data);
     }
@@ -819,7 +825,6 @@ class DashboardController extends BaseController
     {
         $nama_proyek = $this->request->getPost('nama_proyek');
         $lokasi = $this->request->getPost('lokasi');
-        $jangka_waktu = $this->request->getPost('jangka_waktu');
         $tgl_mulai = $this->request->getPost('tgl_mulai');
         $tgl_selesai = $this->request->getPost('tgl_selesai');
         $konsultan_pengawas = $this->request->getPost('konsultan_pengawas');
@@ -829,7 +834,6 @@ class DashboardController extends BaseController
         $validasi = [
             'nama_proyek' => $nama_proyek,
             'lokasi' => $lokasi,
-            'jangka_waktu' => $jangka_waktu,
             'tgl_mulai' => $tgl_mulai,
             'tgl_selesai' => $tgl_selesai,
             'konsultan_pengawas' => $konsultan_pengawas,
@@ -847,7 +851,6 @@ class DashboardController extends BaseController
             $insert = [
                 'nama_proyek' => $nama_proyek,
                 'lokasi' => $lokasi,
-                'jangka_waktu' => $jangka_waktu,
                 'tgl_mulai' => $tgl_mulai,
                 'tgl_selesai' => $tgl_selesai,
                 'konsultan_pengawas' => $konsultan_pengawas,
@@ -881,7 +884,6 @@ class DashboardController extends BaseController
         $dekrip = $this->request->getPost('id');
         $nama_proyek = $this->request->getPost('nama_proyek');
         $lokasi = $this->request->getPost('lokasi');
-        $jangka_waktu = $this->request->getPost('jangka_waktu');
         $tgl_mulai = $this->request->getPost('tgl_mulai');
         $tgl_selesai = $this->request->getPost('tgl_selesai');
         $konsultan_pengawas = $this->request->getPost('konsultan_pengawas');
@@ -892,7 +894,6 @@ class DashboardController extends BaseController
         $validasi = [
             'nama_proyek' => $nama_proyek,
             'lokasi' => $lokasi,
-            'jangka_waktu' => $jangka_waktu,
             'tgl_mulai' => $tgl_mulai,
             'tgl_selesai' => $tgl_selesai,
             'konsultan_pengawas' => $konsultan_pengawas,
@@ -912,7 +913,6 @@ class DashboardController extends BaseController
             $update = [
                 'nama_proyek' => $nama_proyek,
                 'lokasi' => $lokasi,
-                'jangka_waktu' => $jangka_waktu,
                 'tgl_mulai' => $tgl_mulai,
                 'tgl_selesai' => $tgl_selesai,
                 'konsultan_pengawas' => $konsultan_pengawas,
@@ -1481,8 +1481,7 @@ class DashboardController extends BaseController
                 $row[] = $list->nama_proyek;
                 $row[] = date('d-m-Y', strtotime($list->tgl_kegiatan));
                 $row[] = $list->keterangan;
-                $row[] = $list->jenis_transaksi == 'kredit' ? rupiah($list->jumlah) : '';
-                $row[] = $list->jenis_transaksi == 'debit' ? rupiah($list->jumlah) : '';
+                $row[] = rupiah($list->jumlah);
                 $row[] = '<a href="' . base_url('dashboard/operasional_edit/' . enkrip($list->id)) . '" class="text-secondary"><i class="fa fa-pencil-alt"></i></a> &nbsp; <a href="#" onClick="return deleteOperasional(' . $list->id . ')" class="text-secondary"><i class="fa fa-trash"></i></a>';
                 $data[] = $row;
             }
@@ -1551,14 +1550,14 @@ class DashboardController extends BaseController
         $id_proyek = $this->request->getPost('id_proyek');
         $tgl_kegiatan = $this->request->getPost('tgl_kegiatan');
         $keterangan = $this->request->getPost('keterangan');
-        $jenis_transaksi = $this->request->getPost('jenis_transaksi');
+        // $jenis_transaksi = $this->request->getPost('jenis_transaksi');
         $jumlah = $this->request->getPost('jumlah');
 
         $validasi = [
             'id_proyek' => $id_proyek,
             'tgl_kegiatan' => $tgl_kegiatan,
             'keterangan' => $keterangan,
-            'jenis_transaksi' => $jenis_transaksi,
+            // 'jenis_transaksi' => $jenis_transaksi,
             'jumlah' => $jumlah,
         ];
 
@@ -1574,7 +1573,7 @@ class DashboardController extends BaseController
                 'id_proyek' => $id_proyek,
                 'tgl_kegiatan' => $tgl_kegiatan,
                 'keterangan' => $keterangan,
-                'jenis_transaksi' => $jenis_transaksi,
+                // 'jenis_transaksi' => $jenis_transaksi,
                 'jumlah' => $jumlah,
             ];
             $save = $this->operasional->save($insert);
@@ -1606,7 +1605,7 @@ class DashboardController extends BaseController
         $id_proyek = $this->request->getPost('id_proyek');
         $tgl_kegiatan = $this->request->getPost('tgl_kegiatan');
         $keterangan = $this->request->getPost('keterangan');
-        $jenis_transaksi = $this->request->getPost('jenis_transaksi');
+        // $jenis_transaksi = $this->request->getPost('jenis_transaksi');
         $jumlah = $this->request->getPost('jumlah');
         $id = dekrip($dekrip);
 
@@ -1614,7 +1613,7 @@ class DashboardController extends BaseController
             'id_proyek' => $id_proyek,
             'tgl_kegiatan' => $tgl_kegiatan,
             'keterangan' => $keterangan,
-            'jenis_transaksi' => $jenis_transaksi,
+            // 'jenis_transaksi' => $jenis_transaksi,
             'jumlah' => $jumlah,
         ];
 
@@ -1632,7 +1631,7 @@ class DashboardController extends BaseController
                 'id_proyek' => $id_proyek,
                 'tgl_kegiatan' => $tgl_kegiatan,
                 'keterangan' => $keterangan,
-                'jenis_transaksi' => $jenis_transaksi,
+                // 'jenis_transaksi' => $jenis_transaksi,
                 'jumlah' => $jumlah,
             ];
             $update_operasional = $this->operasional->where('id', $id)->set($update)->update();
@@ -1820,7 +1819,7 @@ class DashboardController extends BaseController
         $request = Services::request();
         $m_dana = new DanaMasuk_Model($request);
         if ($request->getMethod(true) == 'POST') {
-            $lists = $m_dana->get_datatables();
+            $lists = $m_dana->get_datatables(null);
             $data = [];
             $no = $request->getPost("start");
             foreach ($lists as $list) {
@@ -2402,7 +2401,7 @@ class DashboardController extends BaseController
                 $row[] = date('d-m-Y', strtotime($list->tgl_kegiatan));
                 $row[] = rupiah($list->pemakaian_bbm);
                 $row[] = rupiah($list->jumlah_rpm);
-                $row[] = $list->nama_bahan_bakar;
+                $row[] = $list->nama_material;
                 $row[] = '<a href="' . base_url('dashboard/penggunaan_edit/' . enkrip($list->id)) . '" class="text-secondary"><i class="fa fa-pencil-alt"></i></a> &nbsp; <a href="#" onClick="return deletePenggunaan(' . $list->id . ')" class="text-secondary"><i class="fa fa-trash"></i></a>';
                 $data[] = $row;
             }
@@ -2439,7 +2438,7 @@ class DashboardController extends BaseController
                 $row[] = date('d-m-Y', strtotime($list->tgl_kegiatan));
                 $row[] = $list->pemakaian_bbm;
                 $row[] = rupiah($list->jumlah_rpm);
-                $row[] = $list->nama_bahan_bakar;
+                $row[] = $list->nama_material;
                 $data[] = $row;
             }
             $output = ["draw" => $request->getPost('draw'),
@@ -2579,7 +2578,7 @@ class DashboardController extends BaseController
                 $row[] = $list->jenis_kendaraan;
                 $row[] = $list->nomor_polisi;
                 $row[] = $list->jumlah_pemakaian;
-                $row[] = $list->nama_bahan_bakar;
+                $row[] = $list->nama_material;
                 $row[] = '<a href="' . base_url('dashboard/pemakaian_bbm_edit/' . enkrip($list->id)) . '" class="text-secondary"><i class="fa fa-pencil-alt"></i></a> &nbsp; <a href="#" onClick="return deletePemakaianBBM(' . $list->id . ')" class="text-secondary"><i class="fa fa-trash"></i></a>';
                 $data[] = $row;
             }
@@ -2673,16 +2672,17 @@ class DashboardController extends BaseController
     public function material_read()
     {
         $data['proyek'] = $this->proyek->where('deleted_at', NULL)->get()->getResultObject();
+        $data['jenis_material'] = $this->jenis_material->where('deleted_at', NULL)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
             $value->kegiatan = $this->kegiatan->findAll($value->id);
         }
         return $this->respond($data);
-        
     }
     
     public function material_getedit($id)
     {
         $data['proyek'] = $this->proyek->where('deleted_at', NULL)->get()->getResultObject();
+        $data['jenis_material'] = $this->jenis_material->where('deleted_at', NULL)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
             $value->kegiatan = $this->pemakaian_bbm->findAll($value->id);
         }
@@ -2704,7 +2704,7 @@ class DashboardController extends BaseController
                 $row[] = $no;
                 $row[] = $list->nama_proyek;
                 $row[] = $list->jenis_kegiatan;
-                $row[] = $list->nama_bahan;
+                $row[] = $list->nama_material;
                 $row[] = date('d-m-Y', strtotime($list->tgl_penggunaan));
                 $row[] = rupiah($list->jumlah_pemakaian);
                 $row[] = '<a href="' . base_url('dashboard/material_edit/' . enkrip($list->id)) . '" class="text-secondary"><i class="fa fa-pencil-alt"></i></a> &nbsp; <a href="#" onClick="return deleteMaterial(' . $list->id . ')" class="text-secondary"><i class="fa fa-trash"></i></a>';
@@ -2826,6 +2826,194 @@ class DashboardController extends BaseController
 
         return $this->response->setJSON($response);
     }
+    
+
+    
+    public function jenis_material_read()
+    {
+        $data['material'] = $this->jenis_material->where('deleted_at', NULL)->get()->getResultObject();
+        foreach ($data['proyek'] as $key => $value) {
+            $value->kegiatan = $this->kegiatan->findAll($value->id);
+        }
+        return $this->respond($data);
+        
+    }
+    
+    public function jenis_material_getedit($id)
+    {
+        $data['material'] = $this->jenis_material->find(dekrip($id));
+        return $this->respond($data);
+    }
+
+    public function jenis_material_list()
+    {
+        $request = Services::request();
+        $m_material = new JenisMaterialModel($request);
+        if ($request->getMethod(true) == 'POST') {
+            $lists = $m_material->get_datatables();
+            $data = [];
+            $no = $request->getPost("start");
+            foreach ($lists as $list) {
+                $no++;
+                $row = [];
+                $row[] = $no;
+                $row[] = $list->nama_material;
+                $row[] = '<a href="' . base_url('dashboard/jenis_material_edit/' . enkrip($list->id)) . '" class="text-secondary"><i class="fa fa-pencil-alt"></i></a> &nbsp; <a href="#" onClick="return deleteMaterial(' . $list->id . ')" class="text-secondary"><i class="fa fa-trash"></i></a>';
+                $data[] = $row;
+            }
+            $output = ["draw" => $request->getPost('draw'),
+                "recordsTotal" => $m_material->count_all(),
+                "recordsFiltered" => $m_material->count_filtered(),
+                "data" => $data];
+            echo json_encode($output);
+        }
+    }
+
+    public function jenis_material()
+    {
+        $data = [
+            'title' => 'Manajemen Proyek',
+        ];
+        return view('lapangan/jenis_material', $data);
+    }
+
+    public function jenis_material_lap_list()
+    {
+        $request = Services::request();
+        $m_material = new JenisMaterialModel($request);
+        if ($request->getMethod(true) == 'POST') {
+            $lists = $m_material->get_datatables();
+            $data = [];
+            $no = $request->getPost("start");
+            foreach ($lists as $list) {
+                $no++;
+                $row = [];
+                $row[] = $no;
+                $row[] = $list->nama_material;
+                $data[] = $row;
+            }
+            $output = ["draw" => $request->getPost('draw'),
+                "recordsTotal" => $m_material->count_all(),
+                "recordsFiltered" => $m_material->count_filtered(),
+                "data" => $data];
+            echo json_encode($output);
+        }
+    }
+
+    public function jenis_material_lap()
+    {
+        $data = [
+            'title' => 'Manajemen Proyek',
+        ];
+        return view('direktur/jenis_material', $data);
+    }
+
+    public function jenis_material_add()
+    {
+        $data = [
+            'title' => 'Manajemen Proyek',
+        ];
+        return view('lapangan/jenis_material/jenis_material_add', $data);
+    }
+
+    public function jenis_material_store()
+    {
+        $nama_material = $this->request->getPost('nama_material');
+
+        $validasi = [
+            'nama_material' => $nama_material,
+        ];
+
+        if ($this->validation->run($validasi, 'insertJenisMaterial') == false) {
+            $data = [
+                'title' => 'Manajemen Proyek',
+                'validation' => $this->validation->getErrors(),
+            ];
+            return view('lapangan/jenis_material/jenis_material_add', $data);
+        } else {
+            $insert = [
+                'nama_material' => $nama_material,
+            ];
+            $save = $this->jenis_material->save($insert);
+            if ($save) {
+                session()->setFlashdata('success', 'Tambah jenis material berhasil');
+                return redirect()->to(base_url('dashboard/jenis_material'));
+            } else {
+                session()->setFlashdata('errors', 'Tambah jenis material gagal');
+                return redirect()->to(base_url('dashboard/jenis_material'));
+            }
+        }
+    }
+
+    public function jenis_material_edit($id)
+    {
+        $data = [
+            'title' => 'Manajemen Proyek',
+            'data' => $this->jenis_material->find(dekrip($id)),
+            'id' => $id,
+        ];
+        return view('lapangan/jenis_material/jenis_material_edit', $data);
+
+    }
+
+    public function jenis_material_update()
+    {
+        $dekrip = $this->request->getPost('id');
+        $nama_material = $this->request->getPost('nama_material');
+        $id = dekrip($dekrip);
+
+        $validasi = [
+            'nama_material' => $nama_material,
+        ];
+
+        if ($this->validation->run($validasi, 'insertJenisMaterial') == false) {
+            $data = [
+                'title' => 'Manajemen Proyek',
+                'validation' => $this->validation->getErrors(),
+                'data' => $this->jenis_material->find($id),
+                'id' => $dekrip,
+            ];
+            return view('lapangan/jenis_material/jenis_material_edit', $data);
+        } else {
+            $update = [
+                'nama_material' => $nama_material,
+            ];
+            $update_jenis_material = $this->jenis_material->where('id', $id)->set($update)->update();
+            if ($update_jenis_material) {
+                session()->setFlashdata('success', 'Update jenis material berhasil');
+                return redirect()->to(base_url('dashboard/jenis_material'));
+            } else {
+                session()->setFlashdata('errors', 'Update jenis material gagal');
+                return redirect()->to(base_url('dashboard/jenis_material'));
+            }
+        }
+    }
+
+    public function jenis_material_delete()
+    {
+        $input = $this->request->getRawInput();
+        $id_en = $input['id'];
+        $id = dekrip($id_en);
+        $delete = $this->jenis_material->delete($id);
+        if ($delete) {
+            $response = [
+                'status' => 201,
+                'message' => 'Data jenis material berhasil dihapus',
+            ];
+        } else {
+            $response = [
+                'status' => 500,
+                'message' => 'Data jenis material gagal dihapus',
+            ];
+        }
+
+        return $this->response->setJSON($response);
+    }
+
+
+
+
+    
 
     public function bbm_list()
     {
@@ -2839,7 +3027,7 @@ class DashboardController extends BaseController
                 $no++;
                 $row = [];
                 $row[] = $no;
-                $row[] = $list->nama_bahan_bakar;
+                $row[] = $list->nama_material;
                 $row[] = '<a href="' . base_url('dashboard/bbm_edit/' . enkrip($list->id)) . '" class="text-secondary"><i class="fa fa-pencil-alt"></i></a> &nbsp; <a href="#" onClick="return deleteBBM(' . $list->id . ')" class="text-secondary"><i class="fa fa-trash"></i></a>';
                 $data[] = $row;
             }
@@ -2869,10 +3057,10 @@ class DashboardController extends BaseController
 
     public function bbm_store()
     {
-        $nama_bahan_bakar = $this->request->getPost('nama_bahan_bakar');
+        $nama_material = $this->request->getPost('nama_material');
 
         $validasi = [
-            'nama_bahan_bakar' => $nama_bahan_bakar,
+            'nama_material' => $nama_material,
         ];
 
         if ($this->validation->run($validasi, 'insertBBM') == false) {
@@ -2883,7 +3071,7 @@ class DashboardController extends BaseController
             return view('lapangan/bbm/bbm_add', $data);
         } else {
             $insert = [
-                'nama_bahan_bakar' => $nama_bahan_bakar,
+                'nama_material' => $nama_material,
             ];
             $save = $this->bbm->save($insert);
             if ($save) {
@@ -2910,11 +3098,11 @@ class DashboardController extends BaseController
     public function bbm_update()
     {
         $dekrip = $this->request->getPost('id');
-        $nama_bahan_bakar = $this->request->getPost('nama_bahan_bakar');
+        $nama_material = $this->request->getPost('nama_material');
         $id = dekrip($dekrip);
 
         $validasi = [
-            'nama_bahan_bakar' => $nama_bahan_bakar,
+            'nama_material' => $nama_material,
         ];
 
         if ($this->validation->run($validasi, 'insertBBM') == false) {
@@ -2927,7 +3115,7 @@ class DashboardController extends BaseController
             return view('lapangan/bbm/bbm_edit', $data);
         } else {
             $update = [
-                'nama_bahan_bakar' => $nama_bahan_bakar,
+                'nama_material' => $nama_material,
             ];
             $update_bbm = $this->bbm->where('id', $id)->set($update)->update();
             if ($update_bbm) {

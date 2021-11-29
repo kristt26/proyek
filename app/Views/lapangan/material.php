@@ -27,7 +27,7 @@
                                         <th style="text-align: center;width: 50px;">No</th>
                                         <th style="text-align: center;">Nama Proyek</th>
                                         <th style="text-align: center;">Nama Kegiatan</th>
-                                        <th style="text-align: center;">Nama Bahan</th>
+                                        <th style="text-align: center;">Nama Material</th>
                                         <th style="text-align: center;">Tanggal Penggunaan</th>
                                         <th style="text-align: center;">Jumlah Pemakaian</th>
                                         <th style="text-align: center;width: 50px;"><i class="fa fa-cog"></i></th>

@@ -9,7 +9,7 @@ class Operasional_Model extends Model {
     protected $table = 'operasional';
     protected $primaryKey = 'id';
     protected $returnType     = 'array';
-    protected $allowedFields = ['id_proyek', 'tgl_kegiatan', 'keterangan', 'jenis_transaksi', 'jumlah'];
+    protected $allowedFields = ['id_proyek', 'tgl_kegiatan', 'keterangan', 'jumlah'];
     protected $useSoftDeletes = true;
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';

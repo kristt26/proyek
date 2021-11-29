@@ -195,10 +195,6 @@ class Validation
             'label'  => 'Nomor Polisi',
             'rules'  => 'required'
         ],
-        'jangka_waktu'      => [
-            'label'  => 'Jangka Waktu Pengerjaan',
-            'rules'  => 'required'
-        ],
         'tgl_mulai'      => [
             'label'  => 'Tanggal Mulai',
             'rules'  => 'required'
@@ -226,9 +222,6 @@ class Validation
             'required' => '{field} wajib diisi'
         ],
         'lokasi'    => [
-            'required' => '{field} wajib diisi'
-        ],
-        'jangka_waktu'    => [
             'required' => '{field} wajib diisi'
         ],
         'tgl_mulai'    => [
@@ -385,10 +378,10 @@ class Validation
             'label'  => 'Keterangan',
             'rules'  => 'required'
         ],
-        'jenis_transaksi'      => [
-            'label'  => 'Jenis Transaksi',
-            'rules'  => 'required'
-        ],
+        // 'jenis_transaksi'      => [
+        //     'label'  => 'Jenis Transaksi',
+        //     'rules'  => 'required'
+        // ],
         'jumlah'      => [
             'label'  => 'Jumlah',
             'rules'  => 'required'
@@ -405,9 +398,9 @@ class Validation
         'keterangan'    => [
             'required' => '{field} wajib diisi'
         ],
-        'jenis_transaksi'    => [
-            'required' => '{field} wajib diisi'
-        ],
+        // 'jenis_transaksi'    => [
+        //     'required' => '{field} wajib diisi'
+        // ],
         'jumlah'    => [
             'required' => '{field} wajib diisi'
         ]
@@ -621,6 +614,19 @@ class Validation
 
     public $insertBBM_errors = [
         'nama_bahan_bakar'    => [
+            'required' => '{field} wajib diisi'
+        ]
+    ];
+    
+    public $insertJenisMaterial = [
+        'nama_material'      => [
+            'label'  => 'Nama Material',
+            'rules'  => 'required'
+        ]
+    ];
+
+    public $insertJenisMaterial_errors = [
+        'nama_material'    => [
             'required' => '{field} wajib diisi'
         ]
     ];

@@ -9,15 +9,15 @@ class Proyek_Model extends Model
     protected $table = 'proyek';
     protected $primaryKey = 'id';
     protected $returnType = 'array';
-    protected $allowedFields = ['nama_proyek', 'lokasi', 'jangka_waktu', 'tgl_mulai', 'tgl_selesai', 'konsultan_pengawas', 'kontraktor_pelaksana', 'nilai_kontrak'];
+    protected $allowedFields = ['nama_proyek', 'lokasi', 'tgl_mulai', 'tgl_selesai', 'konsultan_pengawas', 'kontraktor_pelaksana', 'nilai_kontrak'];
     protected $useSoftDeletes = true;
     protected $useTimestamps = true;
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
     protected $deletedField = 'deleted_at';
 
-    protected $column_order = array('id', 'nama_proyek', 'jangka_waktu', 'nilai_kontrak');
-    protected $column_search = array('nama_proyek', 'jangka_waktu', 'lokasi');
+    protected $column_order = array('id', 'nama_proyek', 'nilai_kontrak');
+    protected $column_search = array('nama_proyek', 'lokasi');
     protected $order = array('id' => 'asc');
     protected $request;
     protected $db;

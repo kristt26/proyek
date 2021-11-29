@@ -82,4 +82,24 @@ class Decode
     {
         return 12;
     }
+
+    public function selisih_tanggal($tgl1, $tgl2)
+    {
+        $awal  = date_create($tgl1);
+        $akhir = date_create($tgl2); // waktu sekarang
+        $diff  = date_diff( $awal, $akhir );
+        $hasil = "";
+        if($diff->y>0){
+            $hasil .= ($diff->y . " Tahun ");
+        }
+        if($diff->m>0){
+            $hasil .= ($diff->m . " Bulan ");
+        }
+        if($diff->d>0){
+            $hasil .= ($diff->d . " Hari");
+        }
+        $a = $hasil;
+        
+        return $hasil;
+    }
 }

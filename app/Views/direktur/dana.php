@@ -18,11 +18,11 @@
                             <div class="form-group">
                                 <label for=""></label>
 
-                                <select class="select2-single-placeholder form-control" name="id_proyek" id="proyek"
-                                    onchange="check()">
+                                <select class="select2-single-placeholder form-control" name="id_proyek" id="proyek">
                                     <option value=""></option>
                                     <?php foreach ($proyek as $key => $data):?>
-                                    <option value="<?= $data['id']?>"><?= $data['nama_proyek']?></option>
+                                    <option value="<?= $data['id'].'-'.$data['nama_proyek']?>">
+                                        <?= $data['nama_proyek']?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -89,33 +89,90 @@ $(document).ready(function() {
         placeholder: "Pilih Proyek",
         allowClear: true
     });
-    $('#myTableDana').DataTable({
-        "responsive": true,
-        "processing": true,
-        "serverSide": true,
-        "order": [],
-        "ajax": {
-            "url": "<?php echo base_url('dashboard/dana_lap_list')?>",
-            "type": "POST"
-        },
-        "lengthMenu": [
-            [5, 10, 25],
-            [5, 10, 25]
-        ],
-        "columnDefs": [{
-                "targets": 0,
-                "className": "dt-body-center"
+    $("#proyek").change(function() {
+        var item = $("#proyek").val().split("-");
+        var url = "<?php echo base_url('dashboard/dana_lap_list')?>" + "/" + item[0];
+        $('#myTableDana').DataTable({
+            "responsive": true,
+            "processing": true,
+            "serverSide": true,
+            "order": [],
+            "ajax": {
+                "url": url,
+                "type": "POST"
             },
-            {
-                "targets": 2,
-                "className": "dt-body-center"
-            },
-            {
-                "targets": 4,
-                "className": "dt-body-right"
+
+            "columnDefs": [{
+                    "targets": 0,
+                    "className": "dt-body-center"
+                },
+                {
+                    "targets": 1,
+                    "className": "dt-body-center"
+                },
+                {
+                    "targets": 2,
+                    "className": "dt-body-center"
+                },
+                {
+                    "targets": 4,
+                    "className": "dt-body-right"
+                }
+            ],
+            dom: 'Bfrtip',
+            buttons: {
+                buttons: [{
+                    extend: 'print',
+                    className: 'btn btn-primary btn-icon-split',
+                    titleAttr: 'Stampa Tabella',
+                    text: '<span class="icon text-white-50"><i class="fa fa-print"></i></span><span class="text"> Stampa</span>',
+                    footer: false,
+                    //autoPrint: false,
+                    customize: function(doc) {
+                        var now = new Date();
+                        var jsDate = now.getDate() + '-' + (now.getMonth() + 1) +
+                            '-' + now.getFullYear();
+                        $(doc.document.body)
+
+                            .prepend(
+                                '<div style="position:absolute; top:10; left:50;font-size:30px;">Dana Masuk</div>'
+                            )
+                            .prepend(
+                                '<div style="position:absolute; top:30; left:450;font-size:20px;margin-botton:50px">Proyek:' +
+                                item[1] + '</div>'
+                            )
+
+                        $(doc.document.body).find('table')
+                            .removeClass('dataTable')
+                            .css('font-size', '12px')
+                            .css('margin-top', '65px')
+                            .css('margin-bottom', '60px')
+                        $(doc.document.body).find('th').each(function(index) {
+                            $(this).css('font-size', '18px');
+                            $(this).css('color', '#fff');
+                            $(this).css('background-color', 'blue');
+                        });
+                    },
+                    title: '',
+                    exportOptions: {
+                        columns: ':visible:not(.not-export-col)',
+                        orthogonal: "Export-print"
+                    },
+                    init: function(api, node, config) {
+                        $(node).removeClass('dt-button')
+                    }
+                }],
+                dom: {
+                    container: {
+                        className: 'dt-buttons'
+                    },
+                    button: {
+                        className: 'btn btn-default'
+                    }
+                }
             }
-        ],
-    });
+        });
+    })
 });
         </script>
         <?= $this->endSection() ?>

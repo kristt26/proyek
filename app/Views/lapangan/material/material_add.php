@@ -23,7 +23,7 @@
                                         <div class="col-sm-8">
                                             <select class="select2-single-placeholder form-control" name="id_proyek"
                                                 ng-options="item as item.nama_proyek for item in datas.proyek"
-                                                ng-model="proyek" ng-change="model.id_proyek=proyek.id">
+                                                ng-model="proyek" ng-change="model.id_proyek=proyek.id" required>
                                             </select>
                                         </div>
                                     </div>
@@ -32,16 +32,18 @@
                                         <div class="col-sm-8">
                                             <select class="select2-single-placeholderr form-control" name="id_kegiatan"
                                                 ng-options="item as item.jenis_kegiatan for item in proyek.kegiatan"
-                                                ng-model="kegiatan"
-                                                ng-change="model.id_pemakaian_kendaraan=kegiatan.id; model.jumlah_pemakaian=kegiatan.pemakaian_bbm ; model.tanggal_pakai = kegiatan.tgl_kegiatan">
+                                                ng-model="kegiatan" ng-change="model.id_kegiatan=kegiatan.id;" required>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="nama_bahan" class="col-sm-4 col-form-label">Nama Bahan</label>
+                                        <label for="kegiatan" class="col-sm-4 col-form-label">Pilih Material</label>
                                         <div class="col-sm-8">
-                                            <input type="text" name="nama_bahan" class="form-control"
-                                                placeholder="Nama Bahan" ng-model="model.nama_bahan">
+                                            <select class="select2-single-placeholderr form-control" name="id_material"
+                                                ng-options="item as item.nama_material for item in datas.jenis_material"
+                                                ng-model="material" ng-change="model.id_material = material.id"
+                                                required>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -49,7 +51,8 @@
                                             Penggunaan</label>
                                         <div class="col-sm-8">
                                             <input type="date" name="tgl_penggunaan" class="form-control"
-                                                placeholder="Tanggal Penggunaan" ng-model="model.tgl_penggunaan">
+                                                placeholder="Tanggal Penggunaan" ng-model="model.tgl_penggunaan"
+                                                required>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -58,7 +61,7 @@
                                         <div class="col-sm-8">
                                             <input type="number" name="jumlah_pemakaian" class="form-control"
                                                 placeholder="Jumlah Pemakaian Material"
-                                                ng-model="model.jumlah_pemakaian">
+                                                ng-model="model.jumlah_pemakaian" required>
                                         </div>
                                     </div>
                                     <div class="form-group row">

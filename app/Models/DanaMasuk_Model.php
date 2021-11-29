@@ -31,10 +31,13 @@ class DanaMasuk_Model extends Model
         $this->dt = $this->db->table($this->table);
     }
 
-    private function _get_datatables_query($id_proyek)
+    private function _get_datatables_query($id_proyek = null)
     {
         $i = 0;
-        $this->dt->select('dana_masuk.*,proyek.nama_proyek')->join('proyek', 'proyek.id=dana_masuk.id_proyek')->where('dana_masuk.deleted_at', null)->where("id_proyek", $id_proyek);
+        $this->dt->select('dana_masuk.*,proyek.nama_proyek')->join('proyek', 'proyek.id=dana_masuk.id_proyek')->where('dana_masuk.deleted_at', null);
+        if(!is_null($id_proyek)){
+            $this->dt->where("id_proyek", $id_proyek);
+        }
         foreach ($this->column_search as $item) {
             if ($this->request->getPost('search')['value']) {
                 if ($i === 0) {
@@ -57,9 +60,9 @@ class DanaMasuk_Model extends Model
         }
     }
 
-    public function get_datatables($id_proyek)
+    public function get_datatables($id_proyek = null)
     {
-        $this->_get_datatables_query($id_proyek);
+        $this->_get_datatables_query($id_proyek = null);
         if ($this->request->getPost('length') != -1) {
             $this->dt->limit($this->request->getPost('length'), $this->request->getPost('start'));
         }

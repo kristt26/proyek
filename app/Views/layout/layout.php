@@ -17,6 +17,7 @@
     <link href="<?=base_url()?>/template/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="<?=base_url()?>/template/vendor/sweetalert/sweetalert2.min.css" rel="stylesheet">
     <link href="<?=base_url()?>/template/vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
+    <link href="<?=base_url()?>/template/vendor/datatables/btn.css" rel="stylesheet">
     <script src="<?=base_url()?>/template/vendor/jquery/jquery.min.js"></script>
     <script src="<?=base_url()?>/template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="<?=base_url()?>/template/vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -28,7 +29,12 @@
     <script src="<?=base_url()?>/template/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="<?=base_url()?>/template/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="<?=base_url()?>/template/vendor/datatables/dataTables.responsive.min.js"></script>
+    <script src="<?=base_url()?>/template/vendor/datatables/btn.js"></script>
+    <script src="<?=base_url()?>/template/vendor/datatables/print.js"></script>
     <script src="<?=base_url()?>/template/vendor/ckeditor/ckeditor.js"></script>
+    <script src="<?=base_url()?>/template/vendor/moment/min/moment.min.js"></script>
+    <script src="<?=base_url()?>/template/vendor/moment/moment-precise-range.js"></script>
+    <!-- <script src="<?=base_url()?>/template/vendor/moment-range/dist/moment-range.js"></script> -->
     <style type="text/css">
     .dt-body-center {
         text-align: center;
@@ -150,6 +156,12 @@
                     <span>Jenis Bahan Bakar</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?=base_url('dashboard/jenis_material')?>">
+                    <i class="fa fa-cube"></i>
+                    <span>Jenis Material</span>
+                </a>
+            </li>
             <?php }?>
             <?php if (session()->get('level') == 'bendahara') {?>
             <li class="nav-item">
@@ -203,12 +215,12 @@
                     <span>Daftar Kendaraan Proyek</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="<?=base_url('dashboard/dokumentasi_lap')?>">
                     <i class="fa fa-folder-open"></i>
                     <span>Dokumentasi Proyek</span>
                 </a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" href="<?=base_url('dashboard/penggunaan_lap')?>">
                     <i class="fa fa-gas-pump"></i>
@@ -230,7 +242,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="<?=base_url('dashboard/dana_lap')?>">
                     <i class="fa fa-money-check"></i>
-                    <span>Dana Proyek</span>
+                    <span>Dana Masuk</span>
                 </a>
             </li>
             <?php }?>

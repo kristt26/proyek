@@ -9,15 +9,15 @@ class PemakaianMaterial_Model extends Model {
     protected $table = 'pemakaian_material';
     protected $primaryKey = 'id';
     protected $returnType     = 'array';
-    protected $allowedFields = ['id_proyek', 'id_kegiatan', 'nama_bahan', 'tgl_penggunaan', 'jumlah_pemakaian'];
+    protected $allowedFields = ['id_proyek', 'id_kegiatan', 'id_material', 'tgl_penggunaan', 'jumlah_pemakaian'];
     protected $useSoftDeletes = true;
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    protected $column_order = array('id','nama_bahan', 'tgl_penggunaan');
-    protected $column_search = array('nama_bahan');
+    protected $column_order = array('id','nama_material', 'tgl_penggunaan');
+    protected $column_search = array('nama_material');
     protected $order = array('pemakaian_material.id' => 'asc');
     protected $request;
     protected $db;
@@ -34,7 +34,7 @@ class PemakaianMaterial_Model extends Model {
 
     private function _get_datatables_query(){
         $i = 0;
-        $this->dt->select('`pemakaian_material`.*, `proyek`.`nama_proyek`, `kegiatan`.`jenis_kegiatan`')->join('kegiatan', '`pemakaian_material`.`id_kegiatan` = `kegiatan`.`id`', 'left')->join('proyek', '`kegiatan`.`id_proyek` = `proyek`.`id`', 'left')->where('pemakaian_material.deleted_at', NULL);
+        $this->dt->select('`pemakaian_material`.*, `proyek`.`nama_proyek`, `kegiatan`.`jenis_kegiatan`, material.nama_material')->join('kegiatan', '`pemakaian_material`.`id_kegiatan` = `kegiatan`.`id`', 'left')->join('proyek', '`kegiatan`.`id_proyek` = `proyek`.`id`', 'left')->join("material", "material.id=pemakaian_material.id_material", "left")->where('pemakaian_material.deleted_at', NULL);
         foreach ($this->column_search as $item){
             if($this->request->getPost('search')['value']){ 
                 if($i===0){

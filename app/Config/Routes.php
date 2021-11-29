@@ -173,6 +173,16 @@ $routes->group('dashboard', ['filter' => 'auth'], function ($routes) {
     $routes->get('material_read', 'DashboardController::material_read');
     $routes->get('material_getedit/(:any)', 'DashboardController::material_getedit/$1');
 
+    $routes->get('jenis_material', 'DashboardController::jenis_material');
+    $routes->post('jenis_material_list', 'DashboardController::jenis_material_list');
+    $routes->get('jenis_material_add', 'DashboardController::jenis_material_add');
+    $routes->post('jenis_material_store', 'DashboardController::jenis_material_store');
+    $routes->get('jenis_material_edit/(:any)', 'DashboardController::jenis_material_edit/$1');
+    $routes->put('jenis_material_update', 'DashboardController::jenis_material_update');
+    $routes->delete('jenis_material_delete', 'DashboardController::jenis_material_delete');
+    $routes->get('jenis_material_read', 'DashboardController::jenis_material_read');
+    $routes->get('jenis_material_getedit/(:any)', 'DashboardController::jenis_material_getedit/$1');
+
     $routes->get('bbm', 'DashboardController::bbm');
     $routes->post('bbm_list', 'DashboardController::bbm_list');
     $routes->get('bbm_add', 'DashboardController::bbm_add');

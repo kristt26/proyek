@@ -30,8 +30,8 @@
                                         <th style="text-align: center;">Tanggal Mulai</th>
                                         <th style="text-align: center;">Tanggal Selesai</th>
                                         <th style="text-align: center;">Konsultan Pengawas</th>
-                                        <th style="text-align: center;">Kontraktor Pelaksana</th>
-                                        <th style="text-align: center;">Terapan Anggaran</th>
+                                        <th style="text-align: center;">Penangguna Jawab Lapangan</th>
+                                        <th style="text-align: center;">Serapan Anggaran</th>
                                         <th style="text-align: center;">Nilai Kontrak</th>
                                         <th style="text-align: center;">Kelolah Kegiatan</th>
                                         <th style="text-align: center;"><i class="fa fa-cog"></i></th>
