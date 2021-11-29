@@ -20,7 +20,7 @@
                                 <form action="<?=base_url('dashboard/users_store')?>" method="post"
                                     style="margin-top: 10px;">
                                     <div class="form-group row">
-                                        <label for="id_pegawai" class="col-sm-3 col-form-label">Proyek</label>
+                                        <label for="id_pegawai" class="col-sm-3 col-form-label">Nama Pegawai</label>
                                         <div class="col-sm-9">
                                             <select class="select2-single-placeholder3 form-control" name="id_pegawai">
                                                 <option value="">Select</option>
