@@ -2401,7 +2401,7 @@ class DashboardController extends BaseController
                 $row[] = date('d-m-Y', strtotime($list->tgl_kegiatan));
                 $row[] = rupiah($list->pemakaian_bbm);
                 $row[] = rupiah($list->jumlah_rpm);
-                $row[] = $list->nama_material;
+                $row[] = $list->nama_bahan_bakar;
                 $row[] = '<a href="' . base_url('dashboard/penggunaan_edit/' . enkrip($list->id)) . '" class="text-secondary"><i class="fa fa-pencil-alt"></i></a> &nbsp; <a href="#" onClick="return deletePenggunaan(' . $list->id . ')" class="text-secondary"><i class="fa fa-trash"></i></a>';
                 $data[] = $row;
             }
@@ -2578,7 +2578,7 @@ class DashboardController extends BaseController
                 $row[] = $list->jenis_kendaraan;
                 $row[] = $list->nomor_polisi;
                 $row[] = $list->jumlah_pemakaian;
-                $row[] = $list->nama_material;
+                $row[] = $list->nama_bahan_bakar;
                 $row[] = '<a href="' . base_url('dashboard/pemakaian_bbm_edit/' . enkrip($list->id)) . '" class="text-secondary"><i class="fa fa-pencil-alt"></i></a> &nbsp; <a href="#" onClick="return deletePemakaianBBM(' . $list->id . ')" class="text-secondary"><i class="fa fa-trash"></i></a>';
                 $data[] = $row;
             }
@@ -3027,7 +3027,7 @@ class DashboardController extends BaseController
                 $no++;
                 $row = [];
                 $row[] = $no;
-                $row[] = $list->nama_material;
+                $row[] = $list->nama_bahan_bakar;
                 $row[] = '<a href="' . base_url('dashboard/bbm_edit/' . enkrip($list->id)) . '" class="text-secondary"><i class="fa fa-pencil-alt"></i></a> &nbsp; <a href="#" onClick="return deleteBBM(' . $list->id . ')" class="text-secondary"><i class="fa fa-trash"></i></a>';
                 $data[] = $row;
             }
