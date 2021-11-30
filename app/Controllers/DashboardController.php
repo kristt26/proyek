@@ -788,7 +788,7 @@ class DashboardController extends BaseController
                 $row[] = $no;
                 $row[] = $list->nama_proyek;
                 $row[] = $list->lokasi;
-                $row[] = $list->jangka_waktu;
+                $row[] = $this->decode->selisih_tanggal($list->tgl_mulai, $list->tgl_selesai);
                 $row[] = date('d-m-Y', strtotime($list->tgl_mulai));
                 $row[] = date('d-m-Y', strtotime($list->tgl_selesai));
                 $row[] = $list->konsultan_pengawas;
@@ -2438,7 +2438,7 @@ class DashboardController extends BaseController
                 $row[] = date('d-m-Y', strtotime($list->tgl_kegiatan));
                 $row[] = $list->pemakaian_bbm;
                 $row[] = rupiah($list->jumlah_rpm);
-                $row[] = $list->nama_material;
+                $row[] = $list->nama_bahan_bakar;
                 $data[] = $row;
             }
             $output = ["draw" => $request->getPost('draw'),
@@ -2740,7 +2740,7 @@ class DashboardController extends BaseController
                 $row[] = $no;
                 $row[] = $list->nama_proyek;
                 $row[] = $list->jenis_kegiatan;
-                $row[] = $list->nama_bahan;
+                $row[] = $list->nama_material;
                 $row[] = date('d-m-Y', strtotime($list->tgl_penggunaan));
                 $row[] = rupiah($list->jumlah_pemakaian);
                 $data[] = $row;
