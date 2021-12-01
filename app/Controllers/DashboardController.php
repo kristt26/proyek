@@ -2013,7 +2013,7 @@ class DashboardController extends BaseController
         $request = Services::request();
         $m_dana_keluar = new DanaKeluar_Model($request);
         if ($request->getMethod(true) == 'POST') {
-            $lists = $m_dana_keluar->get_datatables();
+            $lists = $m_dana_keluar->get_datatables(null);
             $data = [];
             $no = $request->getPost("start");
             foreach ($lists as $list) {
@@ -2043,12 +2043,12 @@ class DashboardController extends BaseController
         return view('bendahara/dana_keluar', $data);
     }
 
-    public function dana_keluar_lap_list()
+    public function dana_keluar_lap_list($id_proyek)
     {
         $request = Services::request();
         $m_dana_keluar = new DanaKeluar_Model($request);
         if ($request->getMethod(true) == 'POST') {
-            $lists = $m_dana_keluar->get_datatables();
+            $lists = $m_dana_keluar->get_datatables($id_proyek);
             $data = [];
             $no = $request->getPost("start");
             foreach ($lists as $list) {
@@ -2073,6 +2073,7 @@ class DashboardController extends BaseController
     {
         $data = [
             'title' => 'Manajemen Proyek',
+            'proyek'=> $this->proyek->findAll()
         ];
         return view('direktur/dana_keluar', $data);
     }

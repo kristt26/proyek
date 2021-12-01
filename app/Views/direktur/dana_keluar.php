@@ -3,10 +3,10 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">Daftar Dana Masuk</h1>
+                <h1 class="h3 mb-0 text-gray-800">Daftar Dana Keluar</h1>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page"><a href="#">Dana Masuk</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="#">Dana Keluar</a></li>
                 </ol>
             </div>
 
@@ -91,9 +91,9 @@ $(document).ready(function() {
     });
     $("#proyek").change(function() {
         var item = $("#proyek").val().split("-");
-        var url = "<?php echo base_url('dashboard/dana_lap_list')?>" + "/" + item[0];
+        var url = "<?php echo base_url('dashboard/dana_keluar_lap_list')?>" + "/" + item[0];
         $('#myTableDana').DataTable({
-            "responsive": true,
+            "responsive": false,
             "processing": true,
             "serverSide": true,
             "order": [],

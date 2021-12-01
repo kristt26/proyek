@@ -245,6 +245,12 @@
                     <span>Dana Masuk</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?=base_url('dashboard/dana_keluar_lap')?>">
+                    <i class="fa fa-money-check" aria-hidden="true"></i>
+                    <span>Dana Keluar</span>
+                </a>
+            </li>
             <?php }?>
 
             <hr class="sidebar-divider">

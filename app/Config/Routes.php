@@ -217,6 +217,9 @@ $routes->group('dashboard', ['filter' => 'auth'], function ($routes) {
 
     $routes->get('dana_lap', 'DashboardController::dana_lap');
     $routes->post('dana_lap_list/(:any)', 'DashboardController::dana_lap_list/$1');
+    
+    $routes->get('dana_keluar_lap', 'DashboardController::dana_keluar_lap');
+    $routes->post('dana_keluar_lap_list/(:any)', 'DashboardController::dana_keluar_lap_list/$1');
 });
 
 /*
