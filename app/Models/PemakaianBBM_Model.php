@@ -32,9 +32,12 @@ class PemakaianBBM_Model extends Model {
        $this->dt = $this->db->table($this->table);
     }
 
-    private function _get_datatables_query(){
+    private function _get_datatables_query($id=null){
         $i = 0;
         $this->dt->select('pemakaian_bbm.*,kendaraan.jenis_kendaraan,kendaraan.nomor_polisi,bahan_bakar.nama_bahan_bakar, proyek.nama_proyek, kegiatan.jenis_kegiatan, kelola_kegiatan.nama_kegiatan')->join('penggunaan_kendaraan', '`pemakaian_bbm`.`id_pemakaian_kendaraan` =`penggunaan_kendaraan`.`id`', 'left')->join('kegiatan', '`penggunaan_kendaraan`.`id_kegiatan` = `kegiatan`.`id`', 'left')->join('`kelola_kegiatan`', '`kegiatan`.`id_kegiatan` = `kelola_kegiatan`.`id`', 'left')->join('proyek', '`proyek`.`kelola_kegiatan`.`id_proyek` = `proyek`.`id`','left')->join('bahan_bakar', '`proyek`.`pemakaian_bbm`.`id_bahan_bakar` = `bahan_bakar`.`id`', 'left')->join('kendaraan', '`proyek`.`penggunaan_kendaraan`.`id_kendaraan` = `kendaraan`.`id`', 'left')->where('pemakaian_bbm.deleted_at', NULL);
+        if(!is_null($id)){
+            $this->dt->where('pemakaian_bbm.id_proyek', $id);
+        }
         foreach ($this->column_search as $item){
             if($this->request->getPost('search')['value']){ 
                 if($i===0){
@@ -59,21 +62,30 @@ class PemakaianBBM_Model extends Model {
         }
     }
 
-    function get_datatables(){
-        $this->_get_datatables_query();
-        if($this->request->getPost('length') != -1)
-        $this->dt->limit($this->request->getPost('length'), $this->request->getPost('start'));
+    public function get_datatables($id=null)
+    {
+        $this->_get_datatables_query($id);
+        if ($this->request->getPost('length') != -1) {
+            $this->dt->limit($this->request->getPost('length'), $this->request->getPost('start'));
+        }
+
         $query = $this->dt->get();
         return $query->getResult();
     }
 
-    function count_filtered(){
-        $this->_get_datatables_query();
+    public function count_filtered($id=null)
+    {
+        $this->_get_datatables_query($id);
         return $this->dt->countAllResults();
     }
 
-    public function count_all(){
-        $tbl_storage = $this->db->table($this->table)->where('deleted_at', NULL);
+    public function count_all($id=null)
+    {
+        if(is_null($id)){
+            $tbl_storage = $this->db->table($this->table)->where('deleted_at', null);
+        }else{
+            $tbl_storage = $this->db->table($this->table)->where(['deleted_at'=> null, 'id_proyek'=>$id]);
+        }
         return $tbl_storage->countAllResults();
     }
     public function getData($id){

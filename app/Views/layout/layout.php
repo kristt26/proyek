@@ -215,16 +215,22 @@
                     <span>Daftar Kendaraan Proyek</span>
                 </a>
             </li>
-            <!-- <li class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link" href="<?=base_url('dashboard/dokumentasi_lap')?>">
                     <i class="fa fa-folder-open"></i>
-                    <span>Dokumentasi Proyek</span>
+                    <span>Laporan Kegiatan</span>
                 </a>
-            </li> -->
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="<?=base_url('dashboard/penggunaan_lap')?>">
                     <i class="fa fa-gas-pump"></i>
                     <span>Penggunaan Kendaraan</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?=base_url('dashboard/pemakaian_bbm_lap')?>">
+                    <i class="fa fa-gas-pump"></i>
+                    <span>Pemakaian BBM</span>
                 </a>
             </li>
             <li class="nav-item">

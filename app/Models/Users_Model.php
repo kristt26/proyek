@@ -9,15 +9,15 @@ class Users_Model extends Model {
     protected $table = 'users';
     protected $primaryKey = 'id';
     protected $returnType     = 'array';
-    protected $allowedFields = ['nama', 'hak_akses', 'id_proyek', 'username', 'password', 'status'];
+    protected $allowedFields = ['nama', 'hak_akses', 'username', 'password', 'status'];
     protected $useSoftDeletes = true;
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    protected $column_order = array('users.id','users.nama','users.hak_akses','proyek.nama_proyek');
-    protected $column_search = array('users.nama','users.hak_akses','proyek.nama_proyek');
+    protected $column_order = array('users.id','users.nama','users.hak_akses');
+    protected $column_search = array('users.nama','users.hak_akses');
     protected $order = array('users.id' => 'asc');
     protected $request;
     protected $db;
@@ -34,17 +34,7 @@ class Users_Model extends Model {
 
     private function _get_datatables_query(){
         $i = 0;
-        $this->dt->select("`proyek`.`users`.`id`,
-        `proyek`.`users`.`id_pegawai`,
-        `proyek`.`users`.`hak_akses`,
-        `proyek`.`users`.`id_proyek`,
-        `proyek`.`users`.`username`,
-        `proyek`.`users`.`password`,
-        `proyek`.`users`.`created_at`,
-        `proyek`.`users`.`updated_at`,
-        `proyek`.`users`.`deleted_at`,
-        `proyek`.`pegawai`.`nama`,
-        `proyek`.`nama_proyek`")->join('proyek', 'proyek.id=users.id_proyek', 'left')->join('pegawai', '`users`.`id_pegawai` = `pegawai`.`id`', 'left')->where('users.deleted_at', NULL);
+        $this->dt->select("users.*,.`pegawai`.`nama`")->join('pegawai', '`users`.`id_pegawai` = `pegawai`.`id`', 'left')->where('users.deleted_at', NULL);
         foreach ($this->column_search as $item){
             if($this->request->getPost('search')['value']){ 
                 if($i===0){

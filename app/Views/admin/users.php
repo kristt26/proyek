@@ -26,7 +26,6 @@
                                         <th style="text-align: center;">No</th>
                                         <th style="text-align: center;">Nama</th>
                                         <th style="text-align: center;">Hak Akses</th>
-                                        <th style="text-align: center;">Proyek</th>
                                         <th style="text-align: center;">Username</th>
                                         <th style="text-align: center;"><i class="fa fa-cog"></i></th>
                                     </tr>
@@ -63,7 +62,7 @@ $(document).ready(function() {
                 "className": "dt-body-center"
             },
             {
-                "targets": 5,
+                "targets": 4,
                 "className": "dt-body-center"
             }
         ],

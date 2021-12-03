@@ -64,7 +64,7 @@
                                             Pelaksanaan</label>
                                         <div class="col-sm-9">
                                             <input type="text" name="jangka_waktu" class="form-control" id="jangkaWaktu"
-                                                placeholder="Jamgka Waktu Pelaksanaan" value="" disabled>
+                                                placeholder="Jangka Waktu Pelaksanaan" value="" disabled>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -79,12 +79,15 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="kontraktor_pelaksana" class="col-sm-3 col-form-label">Kontraktor
-                                            Pelaksana</label>
+                                        <label for="kontraktor_pelaksana" class="col-sm-3 col-form-label">Penanggung
+                                            Jawab Lapangan</label>
                                         <div class="col-sm-9">
-                                            <input type="text" name="kontraktor_pelaksana" class="form-control"
-                                                placeholder="Kontraktor Pelaksana"
-                                                value="<?php echo set_value('kontraktor_pelaksana'); ?>">
+                                            <select name="id_pegawai" class="form-control">
+                                                <option>--Pilih Penanggung Jawab--</option>
+                                                <?php foreach ($pegawai as $key => $value):?>
+                                                <option value="<?= $value['id'] ;?>"><?= $value['nama'] ;?></option>
+                                                <?php endforeach;?>
+                                            </select>
                                             <span
                                                 class="text-danger"><?php if(isset($validation['kontraktor_pelaksana']) !='') echo $validation['kontraktor_pelaksana'];?></span>
                                         </div>

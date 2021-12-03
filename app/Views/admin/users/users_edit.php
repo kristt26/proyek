@@ -61,22 +61,6 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="id_proyek" class="col-sm-3 col-form-label">Proyek</label>
-                                        <div class="col-sm-9">
-                                            <select class="select2-single-placeholder2 form-control" name="id_proyek">
-                                                <option value="<?= $data['id_proyek']?>"><?= $data['nama_proyek']?>
-                                                </option>
-                                                <?php
-                                    foreach($proyek as $rowp){
-                                      echo '<option value="'.$rowp['id'].'" '.(($data['id_proyek'] == $rowp['id']) ? 'selected' : '').'>'.$rowp['nama_proyek'].'</option>';
-                                    }
-                              ?>
-                                            </select>
-                                            <span
-                                                class="text-danger"><?php if(isset($validation['id_proyek']) !='') echo $validation['id_proyek'];?></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
                                         <label for="username" class="col-sm-3 col-form-label">Username</label>
                                         <div class="col-sm-9">
                                             <input type="text" name="username" class="form-control"

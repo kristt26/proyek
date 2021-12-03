@@ -10,7 +10,6 @@
                     <li class="breadcrumb-item active" aria-current="page">Tambah</li>
                 </ol>
             </div>
-
             <div class="row">
                 <!-- Datatables -->
                 <div class="col-lg-12">
@@ -75,7 +74,6 @@
                                             </select>
                                         </div>
                                     </div>
-
                                     <div class="form-group row">
                                         <div class="col-sm-12">
                                             <div class="custom-file">
@@ -108,7 +106,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <script>
 $(document).ready(function() {

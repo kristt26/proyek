@@ -78,12 +78,15 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="kontraktor_pelaksana" class="col-sm-3 col-form-label">Kontraktor
-                                            Pelaksana</label>
+                                        <label for="kontraktor_pelaksana" class="col-sm-3 col-form-label">Penanggung
+                                            Jawab Lapangan</label>
                                         <div class="col-sm-9">
-                                            <input type="text" name="kontraktor_pelaksana" class="form-control"
-                                                placeholder="Kontraktor Pelaksana"
-                                                value="<?php echo $data['kontraktor_pelaksana']; ?>">
+                                            <select name="id_pegawai" class="form-control">
+                                                <option value="<?= $item['id']?>"><?= $item['nama']?></option>
+                                                <?php foreach ($pegawai as $key => $value):?>
+                                                <option value="<?= $value['id'] ;?>"><?= $value['nama'] ;?></option>
+                                                <?php endforeach;?>
+                                            </select>
                                             <span
                                                 class="text-danger"><?php if(isset($validation['kontraktor_pelaksana']) !='') echo $validation['kontraktor_pelaksana'];?></span>
                                         </div>

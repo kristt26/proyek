@@ -207,8 +207,8 @@ class Validation
             'label'  => 'Konsultan Pengawas',
             'rules'  => 'required'
         ],
-        'kontraktor_pelaksana'      => [
-            'label'  => 'Kontraktor Pelaksana',
+        'id_pegawai'      => [
+            'label'  => 'Penanggung Jawab Lapangan',
             'rules'  => 'required'
         ],
         'nilai_kontrak'      => [
@@ -233,7 +233,7 @@ class Validation
         'konsultan_pengawas'    => [
             'required' => '{field} wajib diisi'
         ],
-        'kontraktor_pelaksana'    => [
+        'id_pegawai'    => [
             'required' => '{field} wajib diisi'
         ],
         'nilai_kontrak'    => [

@@ -9,7 +9,7 @@ class Proyek_Model extends Model
     protected $table = 'proyek';
     protected $primaryKey = 'id';
     protected $returnType = 'array';
-    protected $allowedFields = ['nama_proyek', 'lokasi', 'tgl_mulai', 'tgl_selesai', 'konsultan_pengawas', 'kontraktor_pelaksana', 'nilai_kontrak'];
+    protected $allowedFields = ['nama_proyek', 'lokasi', 'tgl_mulai', 'tgl_selesai', 'konsultan_pengawas', 'id_pegawai', 'nilai_kontrak'];
     protected $useSoftDeletes = true;
     protected $useTimestamps = true;
     protected $createdField = 'created_at';
@@ -34,8 +34,8 @@ class Proyek_Model extends Model
     private function _get_datatables_query()
     {
         $i = 0;
-        $this->dt->select("proyek.*, (SELECT sum(jumlah) FROM dana_keluar where dana_keluar.id_proyek=proyek.id) AS terapan_anggaran ");
-        $this->dt->where('deleted_at', null);
+        $this->dt->select("proyek.*, pegawai.nama, (SELECT sum(jumlah) FROM dana_keluar where dana_keluar.id_proyek=proyek.id) AS terapan_anggaran ")->join('pegawai', 'proyek.id_pegawai=pegawai.id');
+        $this->dt->where('proyek.deleted_at', null);
         foreach ($this->column_search as $item) {
             if ($this->request->getPost('search')['value']) {
                 if ($i === 0) {

@@ -750,7 +750,7 @@ class DashboardController extends BaseController
                 $row[] = date('d-m-Y', strtotime($list->tgl_mulai));
                 $row[] = date('d-m-Y', strtotime($list->tgl_selesai));
                 $row[] = $list->konsultan_pengawas;
-                $row[] = $list->kontraktor_pelaksana;
+                $row[] = $list->nama;
                 // $row[] = $list->progress_proyek;
                 $row[] = rupiah($list->terapan_anggaran);
                 $row[] = rupiah($list->nilai_kontrak);
@@ -778,11 +778,13 @@ class DashboardController extends BaseController
     {
         $request = Services::request();
         $m_proyek = new Proyek_Model($request);
+        $m_dokumentasi = new Dokumentasi_model();
         if ($request->getMethod(true) == 'POST') {
             $lists = $m_proyek->get_datatables();
             $data = [];
             $no = $request->getPost("start");
             foreach ($lists as $list) {
+                $progress = 
                 $no++;
                 $row = [];
                 $row[] = $no;
@@ -792,7 +794,8 @@ class DashboardController extends BaseController
                 $row[] = date('d-m-Y', strtotime($list->tgl_mulai));
                 $row[] = date('d-m-Y', strtotime($list->tgl_selesai));
                 $row[] = $list->konsultan_pengawas;
-                $row[] = $list->kontraktor_pelaksana;
+                $row[] = $list->nama;
+                $row[] = $m_dokumentasi->getProgress($list->id)."%";
                 $row[] = rupiah($list->nilai_kontrak);
                 $data[] = $row;
             }
@@ -816,7 +819,8 @@ class DashboardController extends BaseController
     {
         $data = [
             'title' => 'Manajemen Proyek',
-            'decode' => $this->decode
+            'decode' => $this->decode,
+            'pegawai' => $this->pegawai->findAll()
         ];
         return view('admin/proyek/proyek_add', $data);
     }
@@ -828,7 +832,7 @@ class DashboardController extends BaseController
         $tgl_mulai = $this->request->getPost('tgl_mulai');
         $tgl_selesai = $this->request->getPost('tgl_selesai');
         $konsultan_pengawas = $this->request->getPost('konsultan_pengawas');
-        $kontraktor_pelaksana = $this->request->getPost('kontraktor_pelaksana');
+        $id_pegawai = $this->request->getPost('id_pegawai');
         $nilai_kontrak = $this->request->getPost('nilai_kontrak');
 
         $validasi = [
@@ -837,7 +841,7 @@ class DashboardController extends BaseController
             'tgl_mulai' => $tgl_mulai,
             'tgl_selesai' => $tgl_selesai,
             'konsultan_pengawas' => $konsultan_pengawas,
-            'kontraktor_pelaksana' => $kontraktor_pelaksana,
+            'id_pegawai' => $id_pegawai,
             'nilai_kontrak' => $nilai_kontrak,
         ];
 
@@ -854,7 +858,7 @@ class DashboardController extends BaseController
                 'tgl_mulai' => $tgl_mulai,
                 'tgl_selesai' => $tgl_selesai,
                 'konsultan_pengawas' => $konsultan_pengawas,
-                'kontraktor_pelaksana' => $kontraktor_pelaksana,
+                'id_pegawai' => $id_pegawai,
                 'nilai_kontrak' => $nilai_kontrak,
             ];
             $save = $this->proyek->save($insert);
@@ -874,7 +878,9 @@ class DashboardController extends BaseController
             'title' => 'Manajemen Proyek',
             'data' => $this->proyek->find(dekrip($id)),
             'id' => $id,
+            'pegawai' => $this->pegawai->findAll()
         ];
+        $data['item']= $this->pegawai->find($data['data']['id_pegawai']);
         return view('admin/proyek/proyek_edit', $data);
 
     }
@@ -887,7 +893,7 @@ class DashboardController extends BaseController
         $tgl_mulai = $this->request->getPost('tgl_mulai');
         $tgl_selesai = $this->request->getPost('tgl_selesai');
         $konsultan_pengawas = $this->request->getPost('konsultan_pengawas');
-        $kontraktor_pelaksana = $this->request->getPost('kontraktor_pelaksana');
+        $id_pegawai = $this->request->getPost('id_pegawai');
         $nilai_kontrak = $this->request->getPost('nilai_kontrak');
         $id = dekrip($dekrip);
 
@@ -897,7 +903,7 @@ class DashboardController extends BaseController
             'tgl_mulai' => $tgl_mulai,
             'tgl_selesai' => $tgl_selesai,
             'konsultan_pengawas' => $konsultan_pengawas,
-            'kontraktor_pelaksana' => $kontraktor_pelaksana,
+            'id_pegawai' => $id_pegawai,
             'nilai_kontrak' => $nilai_kontrak,
         ];
 
@@ -916,7 +922,7 @@ class DashboardController extends BaseController
                 'tgl_mulai' => $tgl_mulai,
                 'tgl_selesai' => $tgl_selesai,
                 'konsultan_pengawas' => $konsultan_pengawas,
-                'kontraktor_pelaksana' => $kontraktor_pelaksana,
+                'id_pegawai' => $id_pegawai,
                 'nilai_kontrak' => $nilai_kontrak,
             ];
             $update_proyek = $this->proyek->where('id', $id)->set($update)->update();
@@ -1297,7 +1303,6 @@ class DashboardController extends BaseController
                 $row[] = $no;
                 $row[] = $list->nama;
                 $row[] = ucwords($list->hak_akses);
-                $row[] = $list->nama_proyek;
                 $row[] = $list->username;
                 $row[] = '<a href="' . base_url('dashboard/users_edit/' . enkrip($list->id)) . '" class="text-secondary"><i class="fa fa-pencil-alt"></i></a> &nbsp; <a href="#" onClick="return deleteUsers(' . $list->id . ')" class="text-secondary"><i class="fa fa-trash"></i></a>';
                 $data[] = $row;
@@ -1378,7 +1383,7 @@ class DashboardController extends BaseController
             'data' => $this->users->getUser(dekrip($id)),
             'proyek' => $this->proyek->findAll(),
             'id' => $id,
-            'pegawai' => $this->pegawai->findAll()
+            'pegawai' => $this->pegawai->findAll(),
         ];
         return view('admin/users/users_edit', $data);
 
@@ -2203,12 +2208,12 @@ class DashboardController extends BaseController
     }
 
 
-    public function dokumentasi_list()
+    public function dokumentasi_list($id=null)
     {
         $request = Services::request();
         $m_dokumentasi = new Dokumentasi_Model($request);
         if ($request->getMethod(true) == 'POST') {
-            $lists = $m_dokumentasi->get_datatables();
+            $lists = $m_dokumentasi->get_datatables($id);
             $data = [];
             $no = $request->getPost("start");
             foreach ($lists as $list) {
@@ -2226,8 +2231,8 @@ class DashboardController extends BaseController
                 $data[] = $row;
             }
             $output = ["draw" => $request->getPost('draw'),
-                "recordsTotal" => $m_dokumentasi->count_all(),
-                "recordsFiltered" => $m_dokumentasi->count_filtered(),
+                "recordsTotal" => $m_dokumentasi->count_all($id),
+                "recordsFiltered" => $m_dokumentasi->count_filtered($id),
                 "data" => $data];
             echo json_encode($output);
         }
@@ -2241,22 +2246,25 @@ class DashboardController extends BaseController
         return view('lapangan/dokumentasi', $data);
     }
 
-    public function dokumentasi_lap_list()
+    public function dokumentasi_lap_list($id)
     {
         $request = Services::request();
         $m_dokumentasi = new Dokumentasi_Model($request);
         if ($request->getMethod(true) == 'POST') {
-            $lists = $m_dokumentasi->get_datatables();
+            $lists = $m_dokumentasi->get_datatables($id);
             $data = [];
             $no = $request->getPost("start");
             foreach ($lists as $list) {
                 $no++;
                 $row = [];
                 $row[] = $no;
-                $row[] = $list->nama_dokumen;
-                $row[] = date('d-m-Y', strtotime($list->tgl));
-                $row[] = $list->file != null ? '<img src="' . base_url() . '/uploads/dokumentasi/' . $list->dokumentasi . '" style="height:75px;">' : '';
-                $row[] = $list->keterangan;
+                $row[] = $list->nama_proyek;
+                $row[] = $list->jenis_kegiatan;
+                $row[] = date('d-m-Y', strtotime($list->tgl_mulai));
+                $row[] = date('d-m-Y', strtotime($list->tgl_selesai));
+                $row[] = $list->progress_proyek;
+                $row[] = $list->status_proyek;
+                $row[] = $list->dokumentasi != null ? '<img src="' . base_url() . '/uploads/dokumentasi/' . $list->dokumentasi . '" style="height:75px;">' : '';
                 $data[] = $row;
             }
             $output = ["draw" => $request->getPost('draw'),
@@ -2269,7 +2277,7 @@ class DashboardController extends BaseController
 
     public function dokumentasi_read()
     {
-        $data = $this->proyek->where('deleted_at', NULL)->get()->getResultObject();
+        $data = $this->proyek->where(['deleted_at'=> NULL, 'id_pegawai'=>session()->get('uid')])->get()->getResultObject();
         foreach ($data as $key => $value) {
             $value->kegiatan = $this->kelola_kegiatan->where('id_proyek', $value->id)->get()->getResult();
         }
@@ -2279,6 +2287,7 @@ class DashboardController extends BaseController
     {
         $data = [
             'title' => 'Manajemen Proyek',
+            'proyek'=> $this->proyek->findAll()
         ];
         return view('direktur/dokumentasi', $data);
     }
@@ -2363,7 +2372,7 @@ class DashboardController extends BaseController
 
     public function pemakaian_read()
     {
-        $data['proyek'] = $this->proyek->where('deleted_at', NULL)->get()->getResultObject();
+        $data['proyek'] = $this->proyek->where(['deleted_at'=> NULL, 'id_pegawai'=>session()->get('uid')])->get()->getResultObject();
         $data['kendaraan'] = $this->kendaraan->where('deleted_at', NULL)->get()->getResultObject();
         $data['bahanBakar'] = $this->bbm->where('deleted_at', NULL)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
@@ -2567,7 +2576,7 @@ class DashboardController extends BaseController
         $request = Services::request();
         $m_pemakaian_bbm = new PemakaianBBM_Model($request);
         if ($request->getMethod(true) == 'POST') {
-            $lists = $m_pemakaian_bbm->get_datatables();
+            $lists = $m_pemakaian_bbm->get_datatables(null);
             $data = [];
             $no = $request->getPost("start");
             foreach ($lists as $list) {
@@ -2584,8 +2593,8 @@ class DashboardController extends BaseController
                 $data[] = $row;
             }
             $output = ["draw" => $request->getPost('draw'),
-                "recordsTotal" => $m_pemakaian_bbm->count_all(),
-                "recordsFiltered" => $m_pemakaian_bbm->count_filtered(),
+                "recordsTotal" => $m_pemakaian_bbm->count_all(null),
+                "recordsFiltered" => $m_pemakaian_bbm->count_filtered(null),
                 "data" => $data];
             echo json_encode($output);
         }
@@ -2597,6 +2606,42 @@ class DashboardController extends BaseController
             'title' => 'Manajemen Proyek',
         ];
         return view('lapangan/pemakaian_bbm', $data);
+    }
+    
+    public function pemakaian_bbm_lap()
+    {
+        $data = [
+            'title' => 'Manajemen Proyek',
+            'proyek'=> $this->proyek->findAll()
+        ];
+        return view('direktur/pemakaian_bbm', $data);
+    }
+    public function pemakaian_bbm_lap_list($id=null)
+    {
+        $request = Services::request();
+        $m_pemakaian_bbm = new PemakaianBBM_Model($request);
+        if ($request->getMethod(true) == 'POST') {
+            $lists = $m_pemakaian_bbm->get_datatables($id);
+            $data = [];
+            $no = $request->getPost("start");
+            foreach ($lists as $list) {
+                $no++;
+                $row = [];
+                $row[] = $no;
+                $row[] = $list->nama_proyek;
+                $row[] = $list->jenis_kegiatan;
+                $row[] = $list->jenis_kendaraan;
+                $row[] = $list->nomor_polisi;
+                $row[] = $list->jumlah_pemakaian;
+                $row[] = $list->nama_bahan_bakar;
+                $data[] = $row;
+            }
+            $output = ["draw" => $request->getPost('draw'),
+                "recordsTotal" => $m_pemakaian_bbm->count_all($id),
+                "recordsFiltered" => $m_pemakaian_bbm->count_filtered($id),
+                "data" => $data];
+            echo json_encode($output);
+        }
     }
 
     public function pemakaian_bbm_add()
@@ -2672,7 +2717,7 @@ class DashboardController extends BaseController
 
     public function material_read()
     {
-        $data['proyek'] = $this->proyek->where('deleted_at', NULL)->get()->getResultObject();
+        $data['proyek'] = $this->proyek->where(['deleted_at'=> NULL, 'id_pegawai'=>session()->get('uid')])->get()->getResultObject();
         $data['jenis_material'] = $this->jenis_material->where('deleted_at', NULL)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
             $value->kegiatan = $this->kegiatan->findAll($value->id);

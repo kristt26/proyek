@@ -3,10 +3,11 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">Daftar Dana Masuk</h1>
+                <h1 class="h3 mb-0 text-gray-800">Daftar Pemakaian Bahan Bakar</h1>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page"><a href="#">Dana Masuk</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="#">Daftar Pemakaian Bahan Bakar</a>
+                    </li>
                 </ol>
             </div>
 
@@ -26,14 +27,16 @@
                             </div>
                         </div>
                         <div class="table-responsive p-3">
-                            <table class="table align-items-center table-flush" id="myTableDana">
+                            <table class="table align-items-center table-flush" id="myTablePemakaian">
                                 <thead class="thead-light">
                                     <tr>
                                         <th style="text-align: center;">No</th>
-                                        <th style="text-align: center;">Proyek</th>
-                                        <th style="text-align: center;">Tanggal</th>
-                                        <th style="text-align: center;">Keterangan</th>
-                                        <th style="text-align: center;">Jumlah</th>
+                                        <th style="text-align: center;">Nama Proyek</th>
+                                        <th style="text-align: center;">Nama Kegiatan</th>
+                                        <th style="text-align: center;">Jenis Kendaraan</th>
+                                        <th style="text-align: center;">Nomor Polisi</th>
+                                        <th style="text-align: center;">Jumlah Pemakaian BBM</th>
+                                        <th style="text-align: center;">Jenis BBM</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -48,49 +51,11 @@
         </div>
         <!---Container Fluid-->
         <script>
-check = () => {
-    console.log("Testing");
-    var element = document.getElementById("proyek");
-    var url = "<?php echo base_url('dashboard/dana_lap_list')?>" + "/" + element.value;
-    $('#myTableDana').DataTable({
-        "responsive": true,
-        "processing": true,
-        "serverSide": true,
-        "order": [],
-        "ajax": {
-            "url": url,
-            "type": "POST"
-        },
-        "lengthMenu": [
-            [5, 10, 25],
-            [5, 10, 25]
-        ],
-        "columnDefs": [{
-                "targets": 0,
-                "className": "dt-body-center"
-            },
-            {
-                "targets": 2,
-                "className": "dt-body-center"
-            },
-            {
-                "targets": 4,
-                "className": "dt-body-right"
-            }
-        ],
-    });
-}
-// var element = document.getElementById("proyek"); element.onchange = function(event) {
-// }
 $(document).ready(function() {
-    $('.select2-single-placeholder').select2({
-        placeholder: "Pilih Proyek",
-        allowClear: true
-    });
     $("#proyek").change(function() {
         var item = $("#proyek").val().split("-");
-        var url = "<?php echo base_url('dashboard/dana_lap_list')?>" + "/" + item[0];
-        $('#myTableDana').DataTable({
+        var url = "<?php echo base_url('dashboard/pemakaian_bbm_lap_list')?>" + "/" + item[0];
+        $('#myTablePemakaian').DataTable({
             "responsive": false,
             "processing": true,
             "serverSide": true,
@@ -133,7 +98,7 @@ $(document).ready(function() {
                         $(doc.document.body)
 
                             .prepend(
-                                '<div style="position:absolute; top:10; left:50;font-size:30px;">Dana Masuk</div>'
+                                '<div style="position:absolute; top:10; left:50;font-size:30px;">Pemakaian BBM</div>'
                             )
                             .prepend(
                                 '<div style="position:absolute; top:30; left:450;font-size:20px;margin-botton:50px">Proyek:' +

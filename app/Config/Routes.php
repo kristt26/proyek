@@ -204,7 +204,7 @@ $routes->group('dashboard', ['filter' => 'auth'], function ($routes) {
     $routes->post('kendaraan_lap_list', 'DashboardController::kendaraan_lap_list');
 
     $routes->get('dokumentasi_lap', 'DashboardController::dokumentasi_lap');
-    $routes->post('dokumentasi_lap_list', 'DashboardController::dokumentasi_lap_list');
+    $routes->post('dokumentasi_lap_list/(:any)', 'DashboardController::dokumentasi_lap_list/$1');
 
     $routes->get('penggunaan_lap', 'DashboardController::penggunaan_lap');
     $routes->post('penggunaan_lap_list', 'DashboardController::penggunaan_lap_list');
@@ -220,6 +220,9 @@ $routes->group('dashboard', ['filter' => 'auth'], function ($routes) {
     
     $routes->get('dana_keluar_lap', 'DashboardController::dana_keluar_lap');
     $routes->post('dana_keluar_lap_list/(:any)', 'DashboardController::dana_keluar_lap_list/$1');
+    
+    $routes->get('pemakaian_bbm_lap', 'DashboardController::pemakaian_bbm_lap');
+    $routes->post('pemakaian_bbm_lap_list/(:any)', 'DashboardController::pemakaian_bbm_lap_list/$1');
 });
 
 

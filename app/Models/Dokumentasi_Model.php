@@ -30,10 +30,13 @@ class Dokumentasi_Model extends Model
         $this->dt = $this->db->table($this->table);
     }
 
-    private function _get_datatables_query()
+    private function _get_datatables_query($id=null)
     {
         $i = 0;
         $this->dt->select('kegiatan.*,proyek.nama_proyek')->join('proyek', 'proyek.id=kegiatan.id_proyek', 'left')->where('kegiatan.deleted_at', null);
+        if(!is_null($id)){
+            $this->dt->where('kegiatan.id_proyek', $id);
+        }
         foreach ($this->column_search as $item) {
             if ($this->request->getPost('search')['value']) {
                 if ($i === 0) {
@@ -58,9 +61,9 @@ class Dokumentasi_Model extends Model
         }
     }
 
-    public function get_datatables()
+    public function get_datatables($id=null)
     {
-        $this->_get_datatables_query();
+        $this->_get_datatables_query($id);
         if ($this->request->getPost('length') != -1) {
             $this->dt->limit($this->request->getPost('length'), $this->request->getPost('start'));
         }
@@ -69,18 +72,21 @@ class Dokumentasi_Model extends Model
         return $query->getResult();
     }
 
-    public function count_filtered()
+    public function count_filtered($id=null)
     {
-        $this->_get_datatables_query();
+        $this->_get_datatables_query($id);
         return $this->dt->countAllResults();
     }
 
-    public function count_all()
+    public function count_all($id=null)
     {
-        $tbl_storage = $this->db->table($this->table)->where('deleted_at', null);
+        if(is_null($id)){
+            $tbl_storage = $this->db->table($this->table)->where('deleted_at', null);
+        }else{
+            $tbl_storage = $this->db->table($this->table)->where(['deleted_at'=> null, 'id_proyek'=>$id]);
+        }
         return $tbl_storage->countAllResults();
     }
-
     public function selectData()
     {
         return $this->db->query("SELECT
@@ -89,5 +95,16 @@ class Dokumentasi_Model extends Model
         FROM
             `kegiatan`
             LEFT JOIN `proyek` ON `proyek`.`kegiatan`.`id_proyek` = `proyek`.`id`")->getResult();
+    }
+    
+    public function getProgress($id)
+    {
+        $progress = 0;
+        $kegiatans = $this->db->table('kelola_kegiatan')->where(['id_proyek'=>$id,'deleted_at'=> null])->get()->getResult();
+        foreach ($kegiatans as $key => $kegiatan) {
+            $dok=  $this->dt->where(['id_kegiatan'=>$kegiatan->id, 'deleted_at'=> null])->get()->getRowObject();
+            $progress += $dok->progress_proyek*($kegiatan->progress/100);
+        }
+        return $progress;
     }
 }
