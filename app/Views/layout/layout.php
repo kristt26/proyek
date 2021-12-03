@@ -170,24 +170,24 @@
                     <span>Dana Operasional</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="<?=base_url('dashboard/transaksi')?>">
                     <i class="fa fa-money-bill"></i>
                     <span>Transaksi Keuangan</span>
                 </a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" href="<?=base_url('dashboard/dana')?>">
                     <i class="fa fa-money-check"></i>
                     <span>Dana Masuk</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="<?=base_url('dashboard/dana_keluar')?>">
                     <i class="fa fa-money-check"></i>
                     <span>Dana Keluar</span>
                 </a>
-            </li>
+            </li> -->
             <?php }?>
 
             <?php if (session()->get('level') == 'direktur') {?>
@@ -233,12 +233,12 @@
                     <span>Penggunaan Material</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="<?=base_url('dashboard/operasional_lap')?>">
                     <i class="fa fa-money-check-alt"></i>
                     <span>Dana Operasional</span>
                 </a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" href="<?=base_url('dashboard/dana_lap')?>">
                     <i class="fa fa-money-check"></i>
