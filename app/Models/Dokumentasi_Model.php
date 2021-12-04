@@ -103,7 +103,7 @@ class Dokumentasi_Model extends Model
         $kegiatans = $this->db->table('kelola_kegiatan')->where(['id_proyek'=>$id,'deleted_at'=> null])->get()->getResult();
         foreach ($kegiatans as $key => $kegiatan) {
             $dok=  $this->dt->where(['id_kegiatan'=>$kegiatan->id, 'deleted_at'=> null])->get()->getRowObject();
-            if($dok->progress_proyek !=null){
+            if(!is_null($dok)){
                 $progress += $dok->progress_proyek*($kegiatan->progress/100);
             }
         }
