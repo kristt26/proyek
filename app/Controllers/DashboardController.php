@@ -1335,7 +1335,7 @@ class DashboardController extends BaseController
 
     public function users_store()
     {
-        $nama = $this->request->getPost('nama');
+        $id_pegawai = $this->request->getPost('id_pegawai');
         $hak_akses = $this->request->getPost('hak_akses');
         $id_proyek = $this->request->getPost('id_proyek');
         $username = $this->request->getPost('username');
@@ -1343,7 +1343,7 @@ class DashboardController extends BaseController
         $confirm_password = $this->request->getPost('confirm_password');
 
         $validasi = [
-            'nama' => $nama,
+            'id_pegawai' => $id_pegawai,
             'hak_akses' => $hak_akses,
             'username' => $username,
             'password' => $password,
@@ -1355,11 +1355,12 @@ class DashboardController extends BaseController
                 'title' => 'Manajemen Proyek',
                 'validation' => $this->validation->getErrors(),
                 'proyek' => $this->proyek->findAll(),
+                'pegawai' => $this->pegawai->findAll()
             ];
             return view('admin/users/users_add', $data);
         } else {
             $insert = [
-                'nama' => $nama,
+                'id_pegawai' => $id_pegawai,
                 'hak_akses' => $hak_akses,
                 'id_proyek' => $id_proyek,
                 'username' => $username,
@@ -1392,7 +1393,7 @@ class DashboardController extends BaseController
     public function users_update()
     {
         $dekrip = $this->request->getPost('id');
-        $nama = $this->request->getPost('nama');
+        $id_pegawai = $this->request->getPost('id_pegawai');
         $hak_akses = $this->request->getPost('hak_akses');
         $id_proyek = $this->request->getPost('id_proyek');
         $username = $this->request->getPost('username');
@@ -1400,7 +1401,7 @@ class DashboardController extends BaseController
         $id = dekrip($dekrip);
 
         $validasi = [
-            'nama' => $nama,
+            'id_pegawai' => $id_pegawai,
             'hak_akses' => $hak_akses,
             'username' => $username,
         ];
@@ -1426,7 +1427,7 @@ class DashboardController extends BaseController
                 return view('admin/users/users_edit', $data);
             } else {
                 $update = [
-                    'nama' => $nama,
+                    'id_pegawai' => $id_pegawai,
                     'hak_akses' => $hak_akses,
                     'id_proyek' => $id_proyek,
                     'username' => $username,

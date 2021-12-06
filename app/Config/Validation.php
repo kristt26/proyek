@@ -339,10 +339,6 @@ class Validation
     ];
 
     public $updateUsers = [
-        'nama'       => [
-            'label'  => 'Nama',
-            'rules'  => 'required'
-        ],
         'hak_akses'      => [
             'label'  => 'Hak Akses',
             'rules'  => 'required'
@@ -354,9 +350,6 @@ class Validation
     ];
 
     public $updateUsers_errors = [
-        'nama'    => [
-            'required' => '{field} wajib diisi'
-        ],
         'hak_akses'    => [
             'required' => '{field} wajib diisi'
         ],

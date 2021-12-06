@@ -9,7 +9,7 @@ class Users_Model extends Model {
     protected $table = 'users';
     protected $primaryKey = 'id';
     protected $returnType     = 'array';
-    protected $allowedFields = ['nama', 'hak_akses', 'username', 'password', 'status'];
+    protected $allowedFields = ['id_pegawai', 'hak_akses', 'username', 'password', 'status'];
     protected $useSoftDeletes = true;
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
