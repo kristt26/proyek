@@ -62,7 +62,7 @@ class DanaMasuk_Model extends Model
 
     public function get_datatables($id_proyek = null)
     {
-        $this->_get_datatables_query($id_proyek = null);
+        $this->_get_datatables_query($id_proyek);
         if ($this->request->getPost('length') != -1) {
             $this->dt->limit($this->request->getPost('length'), $this->request->getPost('start'));
         }
