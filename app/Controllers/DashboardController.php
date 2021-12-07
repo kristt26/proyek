@@ -2282,7 +2282,7 @@ class DashboardController extends BaseController
         foreach ($data as $key => $value) {
             $value->kegiatan = $this->kelola_kegiatan->where('id_proyek', $value->id)->get()->getResult();
         }
-        return $this->respond($data);
+        return $this->respond(session()->get('uid'));
     }
     public function dokumentasi_lap()
     {
@@ -3104,10 +3104,10 @@ class DashboardController extends BaseController
 
     public function bbm_store()
     {
-        $nama_material = $this->request->getPost('nama_material');
+        $nama_bahan_bakar = $this->request->getPost('nama_bahan_bakar');
 
         $validasi = [
-            'nama_material' => $nama_material,
+            'nama_bahan_bakar' => $nama_bahan_bakar,
         ];
 
         if ($this->validation->run($validasi, 'insertBBM') == false) {
@@ -3118,7 +3118,7 @@ class DashboardController extends BaseController
             return view('lapangan/bbm/bbm_add', $data);
         } else {
             $insert = [
-                'nama_material' => $nama_material,
+                'nama_bahan_bakar' => $nama_bahan_bakar,
             ];
             $save = $this->bbm->save($insert);
             if ($save) {
