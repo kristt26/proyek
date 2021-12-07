@@ -2278,7 +2278,7 @@ class DashboardController extends BaseController
 
     public function dokumentasi_read()
     {
-        $data = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id')->where(['deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
+        $data = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
         foreach ($data as $key => $value) {
             $value->kegiatan = $this->kelola_kegiatan->where('id_proyek', $value->id)->get()->getResult();
         }
