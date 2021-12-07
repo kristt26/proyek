@@ -1507,12 +1507,12 @@ class DashboardController extends BaseController
         return view('bendahara/operasional', $data);
     }
 
-    public function operasional_lap_list()
+    public function operasional_lap_list($id = null)
     {
         $request = Services::request();
         $m_operasional = new Operasional_Model($request);
         if ($request->getMethod(true) == 'POST') {
-            $lists = $m_operasional->get_datatables();
+            $lists = $m_operasional->get_datatables($id);
             $data = [];
             $no = $request->getPost("start");
             foreach ($lists as $list) {

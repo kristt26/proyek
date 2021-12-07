@@ -91,7 +91,7 @@ $(document).ready(function() {
     });
     $("#proyek").change(function() {
         var item = $("#proyek").val().split("-");
-        var url = "<?php echo base_url('dashboard/dana_keluar_lap_list')?>" + "/" + item[0];
+        var url = "<?php echo base_url('dashboard/operasional_lap_list')?>" + "/" + item[0];
         $('#myTableDana').DataTable({
             "responsive": false,
             "processing": true,

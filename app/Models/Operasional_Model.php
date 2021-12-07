@@ -32,9 +32,12 @@ class Operasional_Model extends Model {
        $this->dt = $this->db->table($this->table);
     }
 
-    private function _get_datatables_query(){
+    private function _get_datatables_query($id= null){
         $i = 0;
         $this->dt->select('operasional.*,proyek.nama_proyek')->join('proyek', 'proyek.id=operasional.id_proyek')->where('operasional.deleted_at', NULL);
+        if(!is_null($id)){
+            $this->dt->where('operasional.id_proyek', $id);
+        }
         foreach ($this->column_search as $item){
             if($this->request->getPost('search')['value']){ 
                 if($i===0){
@@ -59,8 +62,8 @@ class Operasional_Model extends Model {
         }
     }
 
-    function get_datatables(){
-        $this->_get_datatables_query();
+    function get_datatables($id = null){
+        $this->_get_datatables_query($id);
         if($this->request->getPost('length') != -1)
         $this->dt->limit($this->request->getPost('length'), $this->request->getPost('start'));
         $query = $this->dt->get();
