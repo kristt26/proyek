@@ -55,7 +55,9 @@
         <script>
 $(document).ready(function() {
     var table;
-    table.destroy();
+    if (table) {
+        table.destroy();
+    }
     table = $("#proyek").change(function() {
         var item = $("#proyek").val().split("-");
         var url = "<?php echo base_url('dashboard/dokumentasi_lap_list')?>" + "/" + item[0];
