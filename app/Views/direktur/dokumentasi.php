@@ -54,10 +54,13 @@
         <!---Container Fluid-->
         <script>
 $(document).ready(function() {
-    $("#proyek").change(function() {
+    var table;
+    table.destroy();
+    table = $("#proyek").change(function() {
         var item = $("#proyek").val().split("-");
         var url = "<?php echo base_url('dashboard/dokumentasi_lap_list')?>" + "/" + item[0];
         $('#myTableDokumentasi').DataTable({
+            "destroy": true,
             "responsive": false,
             "processing": true,
             "serverSide": true,
