@@ -95,10 +95,9 @@ $(document).ready(function() {
                         .prepend(
                             '<div style="position:absolute; top:10; left:50;font-size:30px;">Daftar Proyek</div>'
                         )
-                    // .prepend(
-                    //     '<div style="position:absolute; top:30; left:450;font-size:20px;margin-botton:50px">Proyek:' +
-                    //     item[1] + '</div>'
-                    // )
+                        .prepend(
+                            '<div style="position:absolute; top:30; left:450;font-size:20px;margin-botton:50px">PT. AGUNG MINERAL UTAMA</div>'
+                        )
 
                     $(doc.document.body).find('table')
                         .removeClass('dataTable')
