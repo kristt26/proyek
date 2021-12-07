@@ -50,7 +50,7 @@ $(document).ready(function() {
         "serverSide": true,
         "order": [],
         "ajax": {
-            "url": "<?php echo base_url('dashboard/operasional_list')?>",
+            "url": "<?php echo base_url('dashboard/operasional_list/')?>",
             "type": "POST"
         },
         //optional

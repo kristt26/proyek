@@ -2214,7 +2214,7 @@ class DashboardController extends BaseController
         $request = Services::request();
         $m_dokumentasi = new Dokumentasi_Model($request);
         if ($request->getMethod(true) == 'POST') {
-            $lists = $m_dokumentasi->get_datatables($id);
+            $lists = $m_dokumentasi->get_datatables1(session()->get('uid'));
             $data = [];
             $no = $request->getPost("start");
             foreach ($lists as $list) {
@@ -2232,8 +2232,8 @@ class DashboardController extends BaseController
                 $data[] = $row;
             }
             $output = ["draw" => $request->getPost('draw'),
-                "recordsTotal" => $m_dokumentasi->count_all($id),
-                "recordsFiltered" => $m_dokumentasi->count_filtered($id),
+                "recordsTotal" => $m_dokumentasi->count_all1($id),
+                "recordsFiltered" => $m_dokumentasi->count_filtered1($id),
                 "data" => $data];
             echo json_encode($output);
         }

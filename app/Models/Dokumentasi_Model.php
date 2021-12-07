@@ -109,4 +109,63 @@ class Dokumentasi_Model extends Model
         }
         return $progress;
     }
+
+
+    private function _get_datatables_query1($id=null)
+    {
+        $i = 0;
+        $this->dt->select('kegiatan.*,proyek.nama_proyek')->join('proyek', 'proyek.id=kegiatan.id_proyek', 'left')->join('pegawai', 'pegawai.id=proyek.id_pegawai')->join('users', 'users.id_pegawai=pegawai.id')->where('kegiatan.deleted_at', null);
+        if(!is_null($id)){
+            $this->dt->where('users.id', $id);
+        }
+        foreach ($this->column_search as $item) {
+            if ($this->request->getPost('search')['value']) {
+                if ($i === 0) {
+                    $this->dt->groupStart();
+                    $this->dt->like($item, $this->request->getPost('search')['value']);
+                } else {
+                    $this->dt->orLike($item, $this->request->getPost('search')['value']);
+                }
+                if (count($this->column_search) - 1 == $i) {
+                    $this->dt->groupEnd();
+                }
+
+            }
+            $i++;
+        }
+
+        if ($this->request->getPost('order')) {
+            $this->dt->orderBy($this->column_order[$this->request->getPost('order')['0']['column']], $this->request->getPost('order')['0']['dir']);
+        } else if (isset($this->order)) {
+            $order = $this->order;
+            $this->dt->orderBy(key($order), $order[key($order)]);
+        }
+    }
+
+    public function get_datatables1($id=null)
+    {
+        $this->_get_datatables_query1($id);
+        if ($this->request->getPost('length') != -1) {
+            $this->dt->limit($this->request->getPost('length'), $this->request->getPost('start'));
+        }
+
+        $query = $this->dt->get();
+        return $query->getResult();
+    }
+
+    public function count_filtered1($id=null)
+    {
+        $this->_get_datatables_query($id);
+        return $this->dt->countAllResults();
+    }
+
+    public function count_all1($id=null)
+    {
+        if(is_null($id)){
+            $tbl_storage = $this->db->table($this->table)->where('deleted_at', null);
+        }else{
+            $tbl_storage = $this->db->table($this->table)->where(['deleted_at'=> null, 'id_proyek'=>$id]);
+        }
+        return $tbl_storage->countAllResults();
+    }
 }
