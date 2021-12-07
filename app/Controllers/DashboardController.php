@@ -2232,8 +2232,8 @@ class DashboardController extends BaseController
                 $data[] = $row;
             }
             $output = ["draw" => $request->getPost('draw'),
-                "recordsTotal" => $m_dokumentasi->count_all1($id),
-                "recordsFiltered" => $m_dokumentasi->count_filtered1($id),
+                "recordsTotal" => $m_dokumentasi->count_all1(session()->get('uid')),
+                "recordsFiltered" => $m_dokumentasi->count_filtered1(session()->get('uid')),
                 "data" => $data];
             echo json_encode($output);
         }
