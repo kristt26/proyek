@@ -2373,7 +2373,7 @@ class DashboardController extends BaseController
 
     public function pemakaian_read()
     {
-        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users,id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
+        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
         $data['kendaraan'] = $this->kendaraan->where('deleted_at', NULL)->get()->getResultObject();
         $data['bahanBakar'] = $this->bbm->where('deleted_at', NULL)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
@@ -2385,7 +2385,7 @@ class DashboardController extends BaseController
     
     public function pemakaian_getedit($id)
     {
-        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users,id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
+        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
             $value->kegiatan = $this->kegiatan->getData($value->id);
         }
@@ -2558,7 +2558,7 @@ class DashboardController extends BaseController
     
     public function pemakaian_bbm_getedit($id)
     {
-        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users,id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
+        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
         $data['kendaraan'] = $this->kendaraan->where('deleted_at', NULL)->get()->getResultObject();
         $data['bahanBakar'] = $this->bbm->where('deleted_at', NULL)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
@@ -2718,7 +2718,7 @@ class DashboardController extends BaseController
 
     public function material_read()
     {
-        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users,id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
+        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
         $data['jenis_material'] = $this->jenis_material->where('deleted_at', NULL)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
             $value->kegiatan = $this->kegiatan->findAll($value->id);
@@ -2728,7 +2728,7 @@ class DashboardController extends BaseController
     
     public function material_getedit($id)
     {
-        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users,id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
+        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
         $data['jenis_material'] = $this->jenis_material->where('deleted_at', NULL)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
             $value->kegiatan = $this->pemakaian_bbm->findAll($value->id);
