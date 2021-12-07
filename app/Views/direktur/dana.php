@@ -90,7 +90,12 @@ $(document).ready(function() {
     $("#proyek").change(function() {
         var item = $("#proyek").val().split("-");
         var url = "<?php echo base_url('dashboard/dana_lap_list')?>" + "/" + item[0];
-        $('#myTableDana').DataTable({
+        var table;
+        if (table) {
+            table.destroy();
+        }
+        table = $('#myTableDana').DataTable({
+            "destroy": true,
             "responsive": false,
             "processing": true,
             "serverSide": true,

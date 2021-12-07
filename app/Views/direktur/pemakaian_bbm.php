@@ -52,10 +52,15 @@
         <!---Container Fluid-->
         <script>
 $(document).ready(function() {
-    $("#proyek").change(function() {
+    var table;
+    if (table) {
+        table.destroy();
+    }
+    table = $("#proyek").change(function() {
         var item = $("#proyek").val().split("-");
         var url = "<?php echo base_url('dashboard/pemakaian_bbm_lap_list')?>" + "/" + item[0];
         $('#myTablePemakaian').DataTable({
+            "destroy": true,
             "responsive": false,
             "processing": true,
             "serverSide": true,
