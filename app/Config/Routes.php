@@ -210,7 +210,7 @@ $routes->group('dashboard', ['filter' => 'auth'], function ($routes) {
     $routes->post('penggunaan_lap_list', 'DashboardController::penggunaan_lap_list');
 
     $routes->get('material_lap', 'DashboardController::material_lap');
-    $routes->post('material_lap_list', 'DashboardController::material_lap_list');
+    $routes->post('material_lap_list/(:any)', 'DashboardController::material_lap_list/$1');
 
     $routes->get('operasional_lap', 'DashboardController::operasional_lap');
     $routes->post('operasional_lap_list/(:any)', 'DashboardController::operasional_lap_list/$1');

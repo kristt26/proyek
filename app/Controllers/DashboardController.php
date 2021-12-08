@@ -2773,12 +2773,12 @@ class DashboardController extends BaseController
         return view('lapangan/material', $data);
     }
 
-    public function material_lap_list()
+    public function material_lap_list($id=null)
     {
         $request = Services::request();
         $m_material = new PemakaianMaterial_Model($request);
         if ($request->getMethod(true) == 'POST') {
-            $lists = $m_material->get_datatables();
+            $lists = $m_material->get_datatables($id);
             $data = [];
             $no = $request->getPost("start");
             foreach ($lists as $list) {
@@ -2804,6 +2804,7 @@ class DashboardController extends BaseController
     {
         $data = [
             'title' => 'Manajemen Proyek',
+            'proyek'=> $this->proyek->findAll()
         ];
         return view('direktur/material', $data);
     }
