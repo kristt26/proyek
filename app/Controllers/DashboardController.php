@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Libraries\Decode;
 use App\Libraries\PDF;
 use App\Libraries\Service_Lib;
 use App\Models\BahanBakar_Model;
@@ -8,6 +9,7 @@ use App\Models\Cabang_Model;
 use App\Models\DanaKeluar_Model;
 use App\Models\DanaMasuk_Model;
 use App\Models\Dokumentasi_Model;
+use App\Models\JenisMaterialModel;
 use App\Models\Kegiatan_Model;
 use App\Models\Kelola_Kegiatan_Model;
 use App\Models\Kendaraan_Model;
@@ -15,14 +17,12 @@ use App\Models\Operasional_Model;
 use App\Models\Pegawai_Model;
 use App\Models\PemakaianBBM_Model;
 use App\Models\PemakaianMaterial_Model;
-use App\Models\JenisMaterialModel;
 use App\Models\PenggunaanKendaraan_Model;
 use App\Models\Proyek_Model;
 use App\Models\Transaksi_Model;
 use App\Models\Users_Model;
-use Config\Services;
-use App\Libraries\Decode;
 use CodeIgniter\API\ResponseTrait;
+use Config\Services;
 
 class DashboardController extends BaseController
 {
@@ -653,7 +653,7 @@ class DashboardController extends BaseController
                     session()->setFlashdata('success', 'Tambah data kendaraan berhasil');
                     return redirect()->to(base_url('dashboard/kendaraan'));
                 }
-            } catch (\Throwable $th) {
+            } catch (\Throwable$th) {
                 session()->setFlashdata('errors', 'Tambah data kendaraan gagal, nomor polisi telah ada');
                 return redirect()->to(base_url('dashboard/kendaraan'));
                 //throw $th;
@@ -784,7 +784,7 @@ class DashboardController extends BaseController
             $data = [];
             $no = $request->getPost("start");
             foreach ($lists as $list) {
-                $progress = 
+                $progress =
                 $no++;
                 $row = [];
                 $row[] = $no;
@@ -795,7 +795,8 @@ class DashboardController extends BaseController
                 $row[] = date('d-m-Y', strtotime($list->tgl_selesai));
                 $row[] = $list->konsultan_pengawas;
                 $row[] = $list->nama;
-                $row[] = $m_dokumentasi->getProgress($list->id)."%";
+                $row[] = rupiah($list->terapan_anggaran);
+                $row[] = $m_dokumentasi->getProgress($list->id) . "%";
                 $row[] = rupiah($list->nilai_kontrak);
                 $data[] = $row;
             }
@@ -820,7 +821,7 @@ class DashboardController extends BaseController
         $data = [
             'title' => 'Manajemen Proyek',
             'decode' => $this->decode,
-            'pegawai' => $this->pegawai->findAll()
+            'pegawai' => $this->pegawai->findAll(),
         ];
         return view('admin/proyek/proyek_add', $data);
     }
@@ -878,9 +879,9 @@ class DashboardController extends BaseController
             'title' => 'Manajemen Proyek',
             'data' => $this->proyek->find(dekrip($id)),
             'id' => $id,
-            'pegawai' => $this->pegawai->findAll()
+            'pegawai' => $this->pegawai->findAll(),
         ];
-        $data['item']= $this->pegawai->find($data['data']['id_pegawai']);
+        $data['item'] = $this->pegawai->find($data['data']['id_pegawai']);
         return view('admin/proyek/proyek_edit', $data);
 
     }
@@ -1328,7 +1329,7 @@ class DashboardController extends BaseController
         $data = [
             'title' => 'Manajemen Proyek',
             'proyek' => $this->proyek->findAll(),
-            'pegawai' => $this->pegawai->findAll()
+            'pegawai' => $this->pegawai->findAll(),
         ];
         return view('admin/users/users_add', $data);
     }
@@ -1355,7 +1356,7 @@ class DashboardController extends BaseController
                 'title' => 'Manajemen Proyek',
                 'validation' => $this->validation->getErrors(),
                 'proyek' => $this->proyek->findAll(),
-                'pegawai' => $this->pegawai->findAll()
+                'pegawai' => $this->pegawai->findAll(),
             ];
             return view('admin/users/users_add', $data);
         } else {
@@ -1885,7 +1886,7 @@ class DashboardController extends BaseController
     {
         $data = [
             'title' => 'Manajemen Proyek',
-            'proyek' => $this->proyek->findAll()
+            'proyek' => $this->proyek->findAll(),
         ];
         return view('direktur/dana', $data);
     }
@@ -2079,7 +2080,7 @@ class DashboardController extends BaseController
     {
         $data = [
             'title' => 'Manajemen Proyek',
-            'proyek'=> $this->proyek->findAll()
+            'proyek' => $this->proyek->findAll(),
         ];
         return view('direktur/dana_keluar', $data);
     }
@@ -2208,8 +2209,7 @@ class DashboardController extends BaseController
         return $this->response->setJSON($response);
     }
 
-
-    public function dokumentasi_list($id=null)
+    public function dokumentasi_list($id = null)
     {
         $request = Services::request();
         $m_dokumentasi = new Dokumentasi_Model($request);
@@ -2278,7 +2278,7 @@ class DashboardController extends BaseController
 
     public function dokumentasi_read()
     {
-        $data = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id')->where(['proyek.deleted_at'=> NULL, 'users.id'=> session()->get('uid')])->get()->getResultObject();
+        $data = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id')->where(['proyek.deleted_at' => null, 'users.id' => session()->get('uid')])->get()->getResultObject();
         foreach ($data as $key => $value) {
             $value->kegiatan = $this->kelola_kegiatan->where('id_proyek', $value->id)->get()->getResult();
         }
@@ -2288,7 +2288,7 @@ class DashboardController extends BaseController
     {
         $data = [
             'title' => 'Manajemen Proyek',
-            'proyek'=> $this->proyek->findAll()
+            'proyek' => $this->proyek->findAll(),
         ];
         return view('direktur/dokumentasi', $data);
     }
@@ -2321,11 +2321,11 @@ class DashboardController extends BaseController
         $data['dataproyek'] = $this->proyek->find($data['data']['id_proyek']);
         return view('lapangan/dokumentasi/dokumentasi_edit', $data);
     }
-    
+
     public function dokumentasi_getedit($id)
     {
         $a = dekrip($id);
-        $data['proyek'] = $this->proyek->where('deleted_at', NULL)->get()->getResultObject();
+        $data['proyek'] = $this->proyek->where('deleted_at', null)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
             $value->kegiatan = $this->kelola_kegiatan->where('id_proyek', $value->id)->get()->getResult();
         }
@@ -2336,7 +2336,7 @@ class DashboardController extends BaseController
     public function dokumentasi_update()
     {
         $data = $this->request->getJSON();
-        if(isset($data->dokumentasi->base64)){
+        if (isset($data->dokumentasi->base64)) {
             $data->dokumentasi = isset($data->dokumentasi->base64) ? $this->decode->decodebase64($data->dokumentasi->base64, 'foto') : $data->dokumentasi;
         }
         $this->dokumentasi->update($data->id, $data);
@@ -2373,24 +2373,24 @@ class DashboardController extends BaseController
 
     public function pemakaian_read()
     {
-        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
-        $data['kendaraan'] = $this->kendaraan->where('deleted_at', NULL)->get()->getResultObject();
-        $data['bahanBakar'] = $this->bbm->where('deleted_at', NULL)->get()->getResultObject();
+        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at' => null, 'users.id' => session()->get('uid')])->get()->getResultObject();
+        $data['kendaraan'] = $this->kendaraan->where('deleted_at', null)->get()->getResultObject();
+        $data['bahanBakar'] = $this->bbm->where('deleted_at', null)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
             $value->kegiatan = $this->kegiatan->getData($value->id);
         }
         return $this->respond($data);
-        
+
     }
-    
+
     public function pemakaian_getedit($id)
     {
-        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
+        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at' => null, 'users.id' => session()->get('uid')])->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
             $value->kegiatan = $this->kegiatan->getData($value->id);
         }
-        $data['kendaraan'] = $this->kendaraan->where('deleted_at', NULL)->findAll();
-        $data['bbm'] = $this->bbm->where('deleted_at', NULL)->findAll();
+        $data['kendaraan'] = $this->kendaraan->where('deleted_at', null)->findAll();
+        $data['bbm'] = $this->bbm->where('deleted_at', null)->findAll();
         $data['pemakaian'] = $this->penggunaan->find(dekrip($id));
         return $this->respond($data);
     }
@@ -2542,30 +2542,30 @@ class DashboardController extends BaseController
 
     public function pemakaian_bbm_read()
     {
-        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
-        $data['kendaraan'] = $this->kendaraan->where('deleted_at', NULL)->get()->getResultObject();
-        $data['bahanBakar'] = $this->bbm->where('deleted_at', NULL)->get()->getResultObject();
+        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at' => null, 'users.id' => session()->get('uid')])->get()->getResultObject();
+        $data['kendaraan'] = $this->kendaraan->where('deleted_at', null)->get()->getResultObject();
+        $data['bahanBakar'] = $this->bbm->where('deleted_at', null)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
             $value->kegiatan = $this->pemakaian_bbm->getData($value->id);
             foreach ($value->kegiatan as $key => $kegiatan) {
-                $kegiatan->pemakaian_bbm = (int)$kegiatan->pemakaian_bbm;
-                $kegiatan->jumlah_rpm = (int)$kegiatan->jumlah_rpm;
+                $kegiatan->pemakaian_bbm = (int) $kegiatan->pemakaian_bbm;
+                $kegiatan->jumlah_rpm = (int) $kegiatan->jumlah_rpm;
             }
         }
         return $this->respond($data);
-        
+
     }
-    
+
     public function pemakaian_bbm_getedit($id)
     {
-        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
-        $data['kendaraan'] = $this->kendaraan->where('deleted_at', NULL)->get()->getResultObject();
-        $data['bahanBakar'] = $this->bbm->where('deleted_at', NULL)->get()->getResultObject();
+        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at' => null, 'users.id' => session()->get('uid')])->get()->getResultObject();
+        $data['kendaraan'] = $this->kendaraan->where('deleted_at', null)->get()->getResultObject();
+        $data['bahanBakar'] = $this->bbm->where('deleted_at', null)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
             $value->kegiatan = $this->pemakaian_bbm->getData($value->id);
             foreach ($value->kegiatan as $key => $kegiatan) {
-                $kegiatan->pemakaian_bbm = (int)$kegiatan->pemakaian_bbm;
-                $kegiatan->jumlah_rpm = (int)$kegiatan->jumlah_rpm;
+                $kegiatan->pemakaian_bbm = (int) $kegiatan->pemakaian_bbm;
+                $kegiatan->jumlah_rpm = (int) $kegiatan->jumlah_rpm;
             }
         }
         $data['pemakaian'] = $this->pemakaian_bbm->find(dekrip($id));
@@ -2608,16 +2608,16 @@ class DashboardController extends BaseController
         ];
         return view('lapangan/pemakaian_bbm', $data);
     }
-    
+
     public function pemakaian_bbm_lap()
     {
         $data = [
             'title' => 'Manajemen Proyek',
-            'proyek'=> $this->proyek->findAll()
+            'proyek' => $this->proyek->findAll(),
         ];
         return view('direktur/pemakaian_bbm', $data);
     }
-    public function pemakaian_bbm_lap_list($id=null)
+    public function pemakaian_bbm_lap_list($id = null)
     {
         $request = Services::request();
         $m_pemakaian_bbm = new PemakaianBBM_Model($request);
@@ -2652,7 +2652,7 @@ class DashboardController extends BaseController
             'kendaraan' => $this->kendaraan->findAll(),
             'bbm' => $this->bbm->findAll(),
         ];
-        
+
         return view('lapangan/pemakaian_bbm/pemakaian_bbm_add', $data);
     }
 
@@ -2718,18 +2718,18 @@ class DashboardController extends BaseController
 
     public function material_read()
     {
-        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
-        $data['jenis_material'] = $this->jenis_material->where('deleted_at', NULL)->get()->getResultObject();
+        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at' => null, 'users.id' => session()->get('uid')])->get()->getResultObject();
+        $data['jenis_material'] = $this->jenis_material->where('deleted_at', null)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
             $value->kegiatan = $this->kegiatan->findAll($value->id);
         }
         return $this->respond($data);
     }
-    
+
     public function material_getedit($id)
     {
-        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at'=> NULL, 'users.id'=>session()->get('uid')])->get()->getResultObject();
-        $data['jenis_material'] = $this->jenis_material->where('deleted_at', NULL)->get()->getResultObject();
+        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at' => null, 'users.id' => session()->get('uid')])->get()->getResultObject();
+        $data['jenis_material'] = $this->jenis_material->where('deleted_at', null)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
             $value->kegiatan = $this->pemakaian_bbm->findAll($value->id);
         }
@@ -2773,7 +2773,7 @@ class DashboardController extends BaseController
         return view('lapangan/material', $data);
     }
 
-    public function material_lap_list($id=null)
+    public function material_lap_list($id = null)
     {
         $request = Services::request();
         $m_material = new PemakaianMaterial_Model($request);
@@ -2804,7 +2804,7 @@ class DashboardController extends BaseController
     {
         $data = [
             'title' => 'Manajemen Proyek',
-            'proyek'=> $this->proyek->findAll()
+            'proyek' => $this->proyek->findAll(),
         ];
         return view('direktur/material', $data);
     }
@@ -2874,19 +2874,17 @@ class DashboardController extends BaseController
 
         return $this->response->setJSON($response);
     }
-    
 
-    
     public function jenis_material_read()
     {
-        $data['material'] = $this->jenis_material->where('deleted_at', NULL)->get()->getResultObject();
+        $data['material'] = $this->jenis_material->where('deleted_at', null)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
             $value->kegiatan = $this->kegiatan->findAll($value->id);
         }
         return $this->respond($data);
-        
+
     }
-    
+
     public function jenis_material_getedit($id)
     {
         $data['material'] = $this->jenis_material->find(dekrip($id));
@@ -3057,11 +3055,6 @@ class DashboardController extends BaseController
 
         return $this->response->setJSON($response);
     }
-
-
-
-
-    
 
     public function bbm_list()
     {

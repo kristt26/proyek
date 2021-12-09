@@ -12,8 +12,8 @@
     <link href="<?=base_url()?>/template/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="<?=base_url()?>/template/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="<?=base_url()?>/template/css/ruang-admin.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= base_url('/template/css/responsive.bootstrap.min.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('/template/css/responsive.jqueryui.min.css') ?>">
+    <link rel="stylesheet" href="<?=base_url('/template/css/responsive.bootstrap.min.css')?>">
+    <link rel="stylesheet" href="<?=base_url('/template/css/responsive.jqueryui.min.css')?>">
     <link href="<?=base_url()?>/template/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="<?=base_url()?>/template/vendor/sweetalert/sweetalert2.min.css" rel="stylesheet">
     <link href="<?=base_url()?>/template/vendor/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css">
@@ -305,7 +305,7 @@
                     </ul>
                 </nav>
                 <!-- Topbar -->
-                <?= $this->renderSection('content') ?>
+                <?=$this->renderSection('content')?>
 
             </div>
             <!-- Footer -->
@@ -326,30 +326,30 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-    <script src="<?= base_url()?>/assets/backend/libs/angular/angular.min.js"></script>
+    <script src="<?=base_url()?>/assets/backend/libs/angular/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.8.2/angular-sanitize.min.js"
         integrity="sha512-JkCv2gG5E746DSy2JQlYUJUcw9mT0vyre2KxE2ZuDjNfqG90Bi7GhcHUjLQ2VIAF1QVsY5JMwA1+bjjU5Omabw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="<?= base_url()?>/assets/backend/js/apps.js"></script>
-    <script src="<?= base_url()?>/assets/backend/js/services/helper.services.js"></script>
-    <script src="<?= base_url()?>/assets/backend/js/services/auth.services.js"></script>
-    <script src="<?= base_url()?>/assets/backend/js/services/admin.services.js"></script>
-    <script src="<?= base_url()?>/assets/backend/js/services/message.services.js"></script>
-    <script src="<?= base_url()?>/assets/backend/js/controllers/admin.controllers.js"></script>
-    <script src="<?= base_url()?>/assets/backend/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
-    <script src="<?= base_url()?>/assets/backend/libs/swangular/swangular.js"></script>
-    <script src="<?= base_url()?>/assets/backend/libs/angular-datatables/dist/angular-datatables.min.js"></script>
-    <script src="<?= base_url()?>/assets/backend/libs/angular-locale_id-id.js"></script>
-    <script src="<?= base_url()?>/assets/backend/libs/input-mask/angular-input-masks-standalone.min.js"></script>
-    <script src="<?= base_url()?>/assets/backend/libs/jquery.PrintArea.js"></script>
-    <script src="<?= base_url()?>/assets/backend/libs/angular-base64-upload/dist/angular-base64-upload.min.js"></script>
-    <script src="<?= base_url()?>/assets/backend/libs/loading/dist/loadingoverlay.min.js"></script>
-    <script src="<?= base_url()?>/assets/backend/libs/calendar/main.min.js"></script>
-    <script src="<?= base_url()?>/assets/backend/libs/calendar/locales-all.min.js"></script>
+    <script src="<?=base_url()?>/assets/backend/js/apps.js"></script>
+    <script src="<?=base_url()?>/assets/backend/js/services/helper.services.js"></script>
+    <script src="<?=base_url()?>/assets/backend/js/services/auth.services.js"></script>
+    <script src="<?=base_url()?>/assets/backend/js/services/admin.services.js"></script>
+    <script src="<?=base_url()?>/assets/backend/js/services/message.services.js"></script>
+    <script src="<?=base_url()?>/assets/backend/js/controllers/admin.controllers.js"></script>
+    <script src="<?=base_url()?>/assets/backend/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <script src="<?=base_url()?>/assets/backend/libs/swangular/swangular.js"></script>
+    <script src="<?=base_url()?>/assets/backend/libs/angular-datatables/dist/angular-datatables.min.js"></script>
+    <script src="<?=base_url()?>/assets/backend/libs/angular-locale_id-id.js"></script>
+    <script src="<?=base_url()?>/assets/backend/libs/input-mask/angular-input-masks-standalone.min.js"></script>
+    <script src="<?=base_url()?>/assets/backend/libs/jquery.PrintArea.js"></script>
+    <script src="<?=base_url()?>/assets/backend/libs/angular-base64-upload/dist/angular-base64-upload.min.js"></script>
+    <script src="<?=base_url()?>/assets/backend/libs/loading/dist/loadingoverlay.min.js"></script>
+    <script src="<?=base_url()?>/assets/backend/libs/calendar/main.min.js"></script>
+    <script src="<?=base_url()?>/assets/backend/libs/calendar/locales-all.min.js"></script>
     <script
-        src="<?= base_url()?>/assets/backend/libs/angularjs-currency-input-mask/dist/angularjs-currency-input-mask.min.js">
+        src="<?=base_url()?>/assets/backend/libs/angularjs-currency-input-mask/dist/angularjs-currency-input-mask.min.js">
     </script>
-    <script src="<?= base_url()?>/assets/backend/libs/jquery.PrintArea.js">
+    <script src="<?=base_url()?>/assets/backend/libs/jquery.PrintArea.js">
     < script src = "<?=base_url()?>/template/js/ruang-admin.min.js" >
     </script>
     <script type="text/javascript">
@@ -367,7 +367,7 @@
         }).then((res) => {
             if (res.value) {
 
-                window.location.href = "<?php echo base_url('dashboard/logout');?>";
+                window.location.href = "<?php echo base_url('dashboard/logout'); ?>";
 
             } else if (res.dismiss == 'cancel') {
                 console.log('cancel');
@@ -376,8 +376,8 @@
     });
     </script>
     <script type="text/javascript">
-    var success = "<?= session()->getFlashdata('success')?>";
-    var errors = "<?= session()->getFlashdata('errors')?>";
+    var success = "<?=session()->getFlashdata('success')?>";
+    var errors = "<?=session()->getFlashdata('errors')?>";
     if (success != '') {
         Swal.fire({
             title: "",

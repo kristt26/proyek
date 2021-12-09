@@ -1,5 +1,5 @@
-        <?= $this->extend('layout/layout') ?>
-        <?= $this->section('content') ?>
+        <?=$this->extend('layout/layout')?>
+        <?=$this->section('content')?>
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -29,6 +29,7 @@
                                         <th style="text-align: center;">Tanggal Selesai</th>
                                         <th style="text-align: center;">Konsultan Pengawas</th>
                                         <th style="text-align: center;">Kontraktor Pelaksana</th>
+                                        <th style="text-align: center;">Terapan Anggaran</th>
                                         <th style="text-align: center;">Progress Keseluruhan</th>
                                         <th style="text-align: center;">Nilai Kontrak</th>
                                     </tr>
@@ -52,7 +53,7 @@ $(document).ready(function() {
         "serverSide": true,
         "order": [],
         "ajax": {
-            "url": "<?php echo base_url('dashboard/proyek_lap_list')?>",
+            "url": "<?php echo base_url('dashboard/proyek_lap_list') ?>",
             "type": "POST"
         },
         //optional
@@ -131,4 +132,4 @@ $(document).ready(function() {
     });
 });
         </script>
-        <?= $this->endSection() ?>
+        <?=$this->endSection()?>
