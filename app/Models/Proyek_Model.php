@@ -47,7 +47,6 @@ class Proyek_Model extends Model
                 if (count($this->column_search) - 1 == $i) {
                     $this->dt->groupEnd();
                 }
-
             }
             $i++;
         }

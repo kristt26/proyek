@@ -214,6 +214,7 @@ $routes->group('dashboard', ['filter' => 'auth'], function ($routes) {
 
     $routes->get('operasional_lap', 'DashboardController::operasional_lap');
     $routes->post('operasional_lap_list/(:any)', 'DashboardController::operasional_lap_list/$1');
+    $routes->post('operasional_lap_list_foot/(:any)', 'DashboardController::operasional_lap_list_foot/$1');
 
     $routes->get('dana_lap', 'DashboardController::dana_lap');
     $routes->post('dana_lap_list/(:any)', 'DashboardController::dana_lap_list/$1');

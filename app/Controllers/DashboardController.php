@@ -1504,6 +1504,7 @@ class DashboardController extends BaseController
     {
         $data = [
             'title' => 'Manajemen Proyek',
+            'proyek' => $this->proyek->findAll(),
         ];
         return view('bendahara/operasional', $data);
     }
@@ -1523,8 +1524,8 @@ class DashboardController extends BaseController
                 $row[] = $list->nama_proyek;
                 $row[] = date('d-m-Y', strtotime($list->tgl_kegiatan));
                 $row[] = $list->keterangan;
-                $row[] = $list->jenis_transaksi == 'kredit' ? rupiah($list->jumlah) : '';
-                $row[] = $list->jenis_transaksi == 'debit' ? rupiah($list->jumlah) : '';
+                $row[] = rupiah($list->jumlah);
+                $row[] = '<a href="' . base_url('dashboard/operasional_edit/' . enkrip($list->id)) . '" class="text-secondary"><i class="fa fa-pencil-alt"></i></a> &nbsp; <a href="#" onClick="return deleteOperasional(' . $list->id . ')" class="text-secondary"><i class="fa fa-trash"></i></a>';
                 $data[] = $row;
             }
             $output = ["draw" => $request->getPost('draw'),
@@ -1533,6 +1534,14 @@ class DashboardController extends BaseController
                 "data" => $data];
             echo json_encode($output);
         }
+    }
+    public function operasional_lap_list_foot($id = null)
+    {
+        $request = Services::request();
+        $m_operasional = new Operasional_Model($request);
+        $lists = $m_operasional->num($id);
+        $lists['jumlah'] = rupiah($lists['jumlah']);
+        return $this->respond($lists);
     }
 
     public function operasional_lap()
