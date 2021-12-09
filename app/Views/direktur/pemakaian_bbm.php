@@ -106,8 +106,11 @@ $(document).ready(function() {
                                 '<div style="position:absolute; top:10; left:50;font-size:30px;">Pemakaian BBM</div>'
                             )
                             .prepend(
-                                '<div style="position:absolute; top:30; left:450;font-size:20px;margin-botton:50px">Proyek:' +
+                                '<div style="position:absolute; top:30; left:350;font-size:15px;margin-botton:50px">Proyek:' +
                                 item[1] + '</div>'
+                            )
+                            .prepend(
+                                '<div style="position:absolute; top:30; left:750;font-size:15px;margin-botton:50px">PT. AGUNG MINERAL UTAMA</div>'
                             )
 
                         $(doc.document.body).find('table')
