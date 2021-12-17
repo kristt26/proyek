@@ -48,7 +48,7 @@
         <script>
 $(document).ready(function() {
     $('#myTableDokumentasi').DataTable({
-        "responsive": true,
+        "responsive": false,
         "processing": true,
         "serverSide": true,
         "order": [],

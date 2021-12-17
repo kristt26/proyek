@@ -30,7 +30,7 @@
                                         <th style="text-align: center;">Nama Kegiatan</th>
                                         <th style="text-align: center;">Jenis Kendaraan</th>
                                         <th style="text-align: center;">Nomor Polisi</th>
-                                        <th style="text-align: center;">Jumlah Pemakaian BBM</th>
+                                        <th style="text-align: center;">Jumlah Pemakaian BBM <br>(Liter)</th>
                                         <th style="text-align: center;">Jenis BBM</th>
                                         <th style="text-align: center;width: 50px;"><i class="fa fa-cog"></i></th>
                                     </tr>

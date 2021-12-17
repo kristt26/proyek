@@ -27,6 +27,7 @@
                                     <tr>
                                         <th style="text-align: center;width: 50px;">No</th>
                                         <th style="text-align: center;">Nama Jenis Material</th>
+                                        <th style="text-align: center;">Satuan</th>
                                         <th style="text-align: center;width: 50px;"><i class="fa fa-cog"></i></th>
                                     </tr>
                                 </thead>
@@ -44,7 +45,7 @@
         <script>
 $(document).ready(function() {
     $('#myTableMaterial').DataTable({
-        "responsive": true,
+        "responsive": false,
         "processing": true,
         "serverSide": true,
         "order": [],

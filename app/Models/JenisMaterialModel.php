@@ -9,7 +9,7 @@ class JenisMaterialModel extends Model
 	protected $table = 'material';
     protected $primaryKey = 'id';
     protected $returnType     = 'array';
-    protected $allowedFields = ['nama_material'];
+    protected $allowedFields = ['nama_material', 'satuan'];
     protected $useSoftDeletes = true;
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';

@@ -60,7 +60,7 @@
                                     <div class="form-group row">
                                         <label for="tgl_selesai" class="col-sm-3 col-form-label">Progress</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" placeholder="Progress Proyek"
+                                            <input type="text" class="form-control" placeholder="Progress Kegiatan"
                                                 ng-model="model.progress_proyek">
                                         </div>
                                     </div>

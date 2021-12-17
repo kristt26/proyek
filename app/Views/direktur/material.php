@@ -32,7 +32,9 @@
                                     <tr>
                                         <th style="text-align: center;width: 50px;">No</th>
                                         <th style="text-align: center;">Nama Bahan</th>
+                                        <th style="text-align: center;">Kegiatan</th>
                                         <th style="text-align: center;">Tanggal Penggunaan</th>
+                                        <th style="text-align: center;">Material</th>
                                         <th style="text-align: center;">Jumlah Pemakaian</th>
                                     </tr>
                                 </thead>

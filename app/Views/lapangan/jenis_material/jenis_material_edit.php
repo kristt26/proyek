@@ -31,11 +31,20 @@
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <label for="satuan" class="col-sm-4 col-form-label">Satuan</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="satuan" class="form-control" placeholder="Satuan"
+                                        value="<?php echo $data['satuan']; ?>">
+                                    <span
+                                        class="text-danger"><?php if(isset($validation['satuan']) !='') echo $validation['satuan'];?></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <div class="col-sm-12" align="right">
                                     <button type="submit" class="btn btn-outline-primary btn-sm"><i
                                             class="fa fa-save"></i> Simpan</button>
-                                    <a href="<?=base_url('dashboard/bbm')?>" class="btn btn-outline-warning btn-sm"><i
-                                            class="fa fa-undo-alt"></i> Batal</a>
+                                    <a href="<?=base_url('dashboard/jenis_material')?>"
+                                        class="btn btn-outline-warning btn-sm"><i class="fa fa-undo-alt"></i> Batal</a>
                                 </div>
                             </div>
                         </form>

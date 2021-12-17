@@ -1360,8 +1360,10 @@ class DashboardController extends BaseController
             ];
             return view('admin/users/users_add', $data);
         } else {
+            $pegawai = $this->pegawai->find($id_pegawai);
             $insert = [
                 'id_pegawai' => $id_pegawai,
+                'nama' => $pegawai['nama'],
                 'hak_akses' => $hak_akses,
                 'id_proyek' => $id_proyek,
                 'username' => $username,
@@ -2287,7 +2289,7 @@ class DashboardController extends BaseController
 
     public function dokumentasi_read()
     {
-        $data = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id')->where(['proyek.deleted_at' => null, 'users.id' => session()->get('uid')])->get()->getResultObject();
+        $data = $this->proyek->select('proyek.*')->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id')->where(['proyek.deleted_at' => null, 'users.id' => session()->get('uid')])->get()->getResultObject();
         foreach ($data as $key => $value) {
             $value->kegiatan = $this->kelola_kegiatan->where('id_proyek', $value->id)->get()->getResult();
         }
@@ -2382,7 +2384,7 @@ class DashboardController extends BaseController
 
     public function pemakaian_read()
     {
-        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at' => null, 'users.id' => session()->get('uid')])->get()->getResultObject();
+        $data['proyek'] = $this->proyek->select("proyek.*")->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at' => null, 'users.id' => session()->get('uid')])->get()->getResultObject();
         $data['kendaraan'] = $this->kendaraan->where('deleted_at', null)->get()->getResultObject();
         $data['bahanBakar'] = $this->bbm->where('deleted_at', null)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
@@ -2551,7 +2553,7 @@ class DashboardController extends BaseController
 
     public function pemakaian_bbm_read()
     {
-        $data['proyek'] = $this->proyek->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at' => null, 'users.id' => session()->get('uid')])->get()->getResultObject();
+        $data['proyek'] = $this->proyek->select("proyek.*")->join('pegawai', 'pegawai.id=proyek.id_pegawai', 'left')->join('users', 'users.id_pegawai=pegawai.id', 'left')->where(['proyek.deleted_at' => null, 'users.id' => session()->get('uid')])->get()->getResultObject();
         $data['kendaraan'] = $this->kendaraan->where('deleted_at', null)->get()->getResultObject();
         $data['bahanBakar'] = $this->bbm->where('deleted_at', null)->get()->getResultObject();
         foreach ($data['proyek'] as $key => $value) {
@@ -2762,7 +2764,7 @@ class DashboardController extends BaseController
                 $row[] = $list->jenis_kegiatan;
                 $row[] = $list->nama_material;
                 $row[] = date('d-m-Y', strtotime($list->tgl_penggunaan));
-                $row[] = rupiah($list->jumlah_pemakaian);
+                $row[] = rupiah($list->jumlah_pemakaian) . ' '.$list->satuan;
                 $row[] = '<a href="' . base_url('dashboard/material_edit/' . enkrip($list->id)) . '" class="text-secondary"><i class="fa fa-pencil-alt"></i></a> &nbsp; <a href="#" onClick="return deleteMaterial(' . $list->id . ')" class="text-secondary"><i class="fa fa-trash"></i></a>';
                 $data[] = $row;
             }
@@ -2796,9 +2798,9 @@ class DashboardController extends BaseController
                 $row[] = $no;
                 $row[] = $list->nama_proyek;
                 $row[] = $list->jenis_kegiatan;
-                $row[] = $list->nama_material;
                 $row[] = date('d-m-Y', strtotime($list->tgl_penggunaan));
-                $row[] = rupiah($list->jumlah_pemakaian);
+                $row[] = $list->nama_material;
+                $row[] = rupiah($list->jumlah_pemakaian) . ' '.$list->satuan;
                 $data[] = $row;
             }
             $output = ["draw" => $request->getPost('draw'),
@@ -2913,6 +2915,7 @@ class DashboardController extends BaseController
                 $row = [];
                 $row[] = $no;
                 $row[] = $list->nama_material;
+                $row[] = $list->satuan;
                 $row[] = '<a href="' . base_url('dashboard/jenis_material_edit/' . enkrip($list->id)) . '" class="text-secondary"><i class="fa fa-pencil-alt"></i></a> &nbsp; <a href="#" onClick="return deleteMaterial(' . $list->id . ')" class="text-secondary"><i class="fa fa-trash"></i></a>';
                 $data[] = $row;
             }
@@ -2945,6 +2948,7 @@ class DashboardController extends BaseController
                 $row = [];
                 $row[] = $no;
                 $row[] = $list->nama_material;
+                $row[] = $list->satuan;
                 $data[] = $row;
             }
             $output = ["draw" => $request->getPost('draw'),
@@ -2974,9 +2978,11 @@ class DashboardController extends BaseController
     public function jenis_material_store()
     {
         $nama_material = $this->request->getPost('nama_material');
+        $satuan = $this->request->getPost('satuan');
 
         $validasi = [
             'nama_material' => $nama_material,
+            'satuan' => $satuan,
         ];
 
         if ($this->validation->run($validasi, 'insertJenisMaterial') == false) {
@@ -2988,6 +2994,7 @@ class DashboardController extends BaseController
         } else {
             $insert = [
                 'nama_material' => $nama_material,
+                'satuan' => $satuan,
             ];
             $save = $this->jenis_material->save($insert);
             if ($save) {
@@ -3015,10 +3022,12 @@ class DashboardController extends BaseController
     {
         $dekrip = $this->request->getPost('id');
         $nama_material = $this->request->getPost('nama_material');
+        $satuan = $this->request->getPost('satuan');
         $id = dekrip($dekrip);
 
         $validasi = [
             'nama_material' => $nama_material,
+            'satuan' => $satuan,
         ];
 
         if ($this->validation->run($validasi, 'insertJenisMaterial') == false) {
@@ -3032,6 +3041,7 @@ class DashboardController extends BaseController
         } else {
             $update = [
                 'nama_material' => $nama_material,
+                'satuan' => $satuan,
             ];
             $update_jenis_material = $this->jenis_material->where('id', $id)->set($update)->update();
             if ($update_jenis_material) {

@@ -615,11 +615,18 @@ class Validation
         'nama_material'      => [
             'label'  => 'Nama Material',
             'rules'  => 'required'
+        ],
+        'satuan'      => [
+            'label'  => 'Satuan Material',
+            'rules'  => 'required'
         ]
     ];
 
     public $insertJenisMaterial_errors = [
         'nama_material'    => [
+            'required' => '{field} wajib diisi'
+        ],
+        'satuan'    => [
             'required' => '{field} wajib diisi'
         ]
     ];

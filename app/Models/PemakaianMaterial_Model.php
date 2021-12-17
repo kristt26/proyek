@@ -34,7 +34,7 @@ class PemakaianMaterial_Model extends Model {
 
     private function _get_datatables_query($id=null){
         $i = 0;
-        $this->dt->select('`pemakaian_material`.*, `proyek`.`nama_proyek`, `kegiatan`.`jenis_kegiatan`, material.nama_material')->join('kegiatan', '`pemakaian_material`.`id_kegiatan` = `kegiatan`.`id`', 'left')->join('proyek', '`kegiatan`.`id_proyek` = `proyek`.`id`', 'left')->join("material", "material.id=pemakaian_material.id_material", "left")->where('pemakaian_material.deleted_at', NULL);
+        $this->dt->select('`pemakaian_material`.*, `proyek`.`nama_proyek`, `kegiatan`.`jenis_kegiatan`, material.*')->join('kegiatan', '`pemakaian_material`.`id_kegiatan` = `kegiatan`.`id`', 'left')->join('proyek', '`kegiatan`.`id_proyek` = `proyek`.`id`', 'left')->join("material", "material.id=pemakaian_material.id_material", "left")->where('pemakaian_material.deleted_at', NULL);
         if(!is_null($id)){
             $this->dt->where('proyek.id', $id);
         }
