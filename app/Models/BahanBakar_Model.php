@@ -9,7 +9,7 @@ class BahanBakar_Model extends Model {
     protected $table = 'bahan_bakar';
     protected $primaryKey = 'id';
     protected $returnType     = 'array';
-    protected $allowedFields = ['nama_bahan_bakar'];
+    protected $allowedFields = ['nama_bahan_bakar', 'satuan'];
     protected $useSoftDeletes = true;
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';

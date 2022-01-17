@@ -3088,6 +3088,7 @@ class DashboardController extends BaseController
                 $row = [];
                 $row[] = $no;
                 $row[] = $list->nama_bahan_bakar;
+                $row[] = $list->satuan;
                 $row[] = '<a href="' . base_url('dashboard/bbm_edit/' . enkrip($list->id)) . '" class="text-secondary"><i class="fa fa-pencil-alt"></i></a> &nbsp; <a href="#" onClick="return deleteBBM(' . $list->id . ')" class="text-secondary"><i class="fa fa-trash"></i></a>';
                 $data[] = $row;
             }
@@ -3118,9 +3119,11 @@ class DashboardController extends BaseController
     public function bbm_store()
     {
         $nama_bahan_bakar = $this->request->getPost('nama_bahan_bakar');
+        $satuan = $this->request->getPost('satuan');
 
         $validasi = [
             'nama_bahan_bakar' => $nama_bahan_bakar,
+            'satuan' => $satuan,
         ];
 
         if ($this->validation->run($validasi, 'insertBBM') == false) {
@@ -3132,6 +3135,7 @@ class DashboardController extends BaseController
         } else {
             $insert = [
                 'nama_bahan_bakar' => $nama_bahan_bakar,
+                'satuan' => $satuan,
             ];
             $save = $this->bbm->save($insert);
             if ($save) {
@@ -3158,11 +3162,13 @@ class DashboardController extends BaseController
     public function bbm_update()
     {
         $dekrip = $this->request->getPost('id');
-        $nama_material = $this->request->getPost('nama_material');
+        $nama_bahan_bakar = $this->request->getPost('nama_bahan_bakar');
+        $satuan = $this->request->getPost('satuan');
         $id = dekrip($dekrip);
 
         $validasi = [
-            'nama_material' => $nama_material,
+            'nama_bahan_bakar' => $nama_bahan_bakar,
+            'satuan' => $satuan,
         ];
 
         if ($this->validation->run($validasi, 'insertBBM') == false) {
@@ -3175,7 +3181,8 @@ class DashboardController extends BaseController
             return view('lapangan/bbm/bbm_edit', $data);
         } else {
             $update = [
-                'nama_material' => $nama_material,
+                'nama_bahan_bakar' => $nama_bahan_bakar,
+                'satuan' => $satuan,
             ];
             $update_bbm = $this->bbm->where('id', $id)->set($update)->update();
             if ($update_bbm) {

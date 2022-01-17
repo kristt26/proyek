@@ -25,6 +25,7 @@
                                     <tr>
                                         <th style="text-align: center;width: 50px;">No</th>
                                         <th style="text-align: center;">Nama Bahan Bakar</th>
+                                        <th style="text-align: center;">Satuan</th>
                                         <th style="text-align: center;width: 50px;"><i class="fa fa-cog"></i></th>
                                     </tr>
                                 </thead>

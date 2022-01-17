@@ -602,6 +602,10 @@ class Validation
         'nama_bahan_bakar'      => [
             'label'  => 'Nama Bahan Bakar',
             'rules'  => 'required'
+        ],
+        'satuan'      => [
+            'label'  => 'Satuan bahan bakar',
+            'rules'  => 'required'
         ]
     ];
 
